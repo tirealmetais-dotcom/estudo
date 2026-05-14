@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Diário de Erros — Real Metais</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --verde:#00B74F;--verde-light:#e8f8f0;--verde-dark:#006B2E;
+  --azul:#112437;--cinza:#9696A0;--snow:#EAEAF4;--white:#fff;
+  --border:#e8e8f2;--shadow:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);
+  --radius:12px;--red:#ef4444;--red-light:#fef2f2;--red-border:#fecaca;
+}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--snow);color:var(--azul);min-height:100vh;padding:32px 16px}
+svg{display:block;flex-shrink:0}
+textarea,input,select,button{font-family:'Plus Jakarta Sans',sans-serif}
+
+.container{max-width:860px;margin:0 auto}
+
+.top-nav{display:flex;align-items:center;gap:12px;margin-bottom:32px}
+.back-btn{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--cinza);text-decoration:none;padding:7px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--white);transition:all .15s}
+.back-btn:hover{color:var(--azul);border-color:#c0c0d4}
+.page-title{font-size:22px;font-weight:800;letter-spacing:-.01em}
+.page-sub{font-size:13px;color:var(--cinza);margin-top:2px}
+
+/* Formulário novo erro */
+.novo-card{background:var(--white);border-radius:var(--radius);border:1.5px solid var(--border);box-shadow:var(--shadow);padding:20px;margin-bottom:24px}
+.novo-card-title{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:16px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.form-field{display:flex;flex-direction:column;gap:5px}
+.form-field.full{grid-column:1/-1}
+.form-label{font-size:11px;font-weight:700;color:var(--cinza);text-transform:uppercase;letter-spacing:.05em}
+.form-input{border:1.5px solid var(--border);border-radius:9px;padding:10px 13px;font-size:13px;color:var(--azul);outline:none;transition:border-color .15s;background:var(--white)}
+.form-input:focus{border-color:var(--verde)}
+.form-input::placeholder{color:#c4c4d4}
+textarea.form-input{resize:vertical;min-height:80px;line-height:1.6}
+select.form-input{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239696A0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+.btn-salvar{display:flex;align-items:center;gap:7px;padding:10px 18px;background:var(--azul);color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;transition:background .15s}
+.btn-salvar:hover{background:#1a3350}
+
+/* Busca e filtros */
+.filtros{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.search-wrap{position:relative;flex:1;min-width:200px}
+.search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--cinza)}
+.search-input{width:100%;padding:10px 12px 10px 38px;border:1.5px solid var(--border);border-radius:9px;font-size:13px;color:var(--azul);background:var(--white);outline:none;transition:border-color .15s}
+.search-input:focus{border-color:var(--verde)}
+.search-input::placeholder{color:#c4c4d4}
+select.filtro-select{padding:10px 32px 10px 12px;border:1.5px solid var(--border);border-radius:9px;font-size:13px;color:var(--azul);background:var(--white);outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239696A0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+
+/* Stats */
+.stats-row{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.stat{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow)}
+.stat-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.stat-v{font-size:18px;font-weight:800;line-height:1}
+.stat-l{font-size:11px;color:var(--cinza)}
+
+/* Lista de erros */
+.erros-list{display:flex;flex-direction:column;gap:10px}
+.erro-card{background:var(--white);border-radius:var(--radius);border:1.5px solid var(--border);box-shadow:var(--shadow);overflow:hidden}
+.erro-card.resolvido{border-left:4px solid var(--verde)}
+.erro-card.pendente{border-left:4px solid #f59e0b}
+
+.erro-header{display:flex;align-items:flex-start;gap:12px;padding:16px 18px;cursor:pointer}
+.erro-status{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.status-resolvido{background:#dcfce7;color:#15803d}
+.status-pendente{background:#fef9c3;color:#a16207}
+.erro-info{flex:1;min-width:0}
+.erro-titulo{font-size:14px;font-weight:700;margin-bottom:3px}
+.erro-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.erro-data{font-size:11px;color:var(--cinza)}
+.erro-tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px}
+.tag-python{background:#dbeafe;color:#1d4ed8}
+.tag-react{background:#ede9fe;color:#7c3aed}
+.tag-banco{background:#fef9c3;color:#a16207}
+.tag-git{background:#dcfce7;color:#15803d}
+.tag-terminal{background:#f1f5f9;color:#475569}
+.tag-outro{background:#f1f5f9;color:#475569}
+.erro-expand{color:#c0c0d0;transition:transform .2s;flex-shrink:0}
+.erro-card.open .erro-expand{transform:rotate(180deg)}
+
+.erro-body{display:none;border-top:1px solid var(--border);padding:16px 18px;flex-direction:column;gap:14px}
+.erro-card.open .erro-body{display:flex}
+.erro-section-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--cinza);display:flex;align-items:center;gap:5px;margin-bottom:6px}
+.erro-text{font-size:13px;color:#374151;line-height:1.7}
+.erro-code{font-family:'Courier New',monospace;background:#f8f8fc;border:1px solid var(--border);border-radius:8px;padding:10px 13px;font-size:12px;color:#374151;line-height:1.6;white-space:pre-wrap;word-break:break-word}
+.erro-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:4px}
+.btn-sm{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:7px;border:1.5px solid var(--border);background:var(--white);font-size:12px;font-weight:600;cursor:pointer;color:var(--cinza);transition:all .15s}
+.btn-sm:hover{border-color:#c0c0d4;color:var(--azul)}
+.btn-sm.danger{border-color:#fecaca;color:var(--red)}
+.btn-sm.danger:hover{background:var(--red-light)}
+.btn-sm.success{border-color:#a7f3d0;color:#15803d}
+.btn-sm.success:hover{background:var(--verde-light)}
+
+.empty-state{text-align:center;padding:56px 24px;color:var(--cinza)}
+.empty-state svg{margin:0 auto 14px;opacity:.25}
+.empty-state p{font-size:15px;font-weight:700;color:var(--azul);margin-bottom:4px}
+.empty-state span{font-size:13px}
+
+.count-label{font-size:12px;color:var(--cinza);margin-bottom:14px}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="top-nav">
+    <a href="index.html" class="back-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Início
+    </a>
+    <div>
+      <div class="page-title">Diário de Erros</div>
+      <div class="page-sub">Registre erros que encontrou e como resolveu</div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row" id="stats-row"></div>
+
+  <!-- Novo erro -->
+  <div class="novo-card">
+    <div class="novo-card-title">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Registrar novo erro
+    </div>
+    <div class="form-grid">
+      <div class="form-field full">
+        <label class="form-label">O que aconteceu</label>
+        <input class="form-input" id="f-titulo" placeholder="Ex: TypeError: Cannot read properties of undefined" maxlength="120">
+      </div>
+      <div class="form-field">
+        <label class="form-label">Área</label>
+        <select class="form-input" id="f-area">
+          <option value="python">Python</option>
+          <option value="react">React / Frontend</option>
+          <option value="banco">Banco de dados</option>
+          <option value="git">Git</option>
+          <option value="terminal">Terminal</option>
+          <option value="outro">Outro</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Status</label>
+        <select class="form-input" id="f-status">
+          <option value="pendente">Pendente — ainda não resolvi</option>
+          <option value="resolvido">Resolvido</option>
+        </select>
+      </div>
+      <div class="form-field full">
+        <label class="form-label">Mensagem de erro (opcional)</label>
+        <textarea class="form-input" id="f-mensagem" placeholder="Cole aqui a mensagem de erro completa do terminal ou do navegador..." rows="3"></textarea>
+      </div>
+      <div class="form-field full">
+        <label class="form-label">O que tentei / como resolvi</label>
+        <textarea class="form-input" id="f-solucao" placeholder="O que você fez para descobrir o problema? Como resolveu? O que aprendeu com isso?" rows="3"></textarea>
+      </div>
+    </div>
+    <button class="btn-salvar" onclick="salvarErro()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Registrar erro
+    </button>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filtros">
+    <div class="search-wrap">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="search-input" id="busca" placeholder="Buscar nos erros..." oninput="renderLista()">
+    </div>
+    <select class="filtro-select" id="filtro-area" onchange="renderLista()">
+      <option value="todos">Todas as áreas</option>
+      <option value="python">Python</option>
+      <option value="react">React</option>
+      <option value="banco">Banco</option>
+      <option value="git">Git</option>
+      <option value="terminal">Terminal</option>
+      <option value="outro">Outro</option>
+    </select>
+    <select class="filtro-select" id="filtro-status" onchange="renderLista()">
+      <option value="todos">Todos os status</option>
+      <option value="pendente">Pendentes</option>
+      <option value="resolvido">Resolvidos</option>
+    </select>
+  </div>
+
+  <div class="count-label" id="count-label"></div>
+  <div class="erros-list" id="erros-list"></div>
+</div>
+
+<script>
+const KEY="rm-erros-v1";
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||[]}catch{return[]}}
+function save(d){localStorage.setItem(KEY,JSON.stringify(d))}
+
+const AREA_LABELS={python:"Python",react:"React",banco:"Banco",git:"Git",terminal:"Terminal",outro:"Outro"};
+
+function salvarErro(){
+  const titulo=document.getElementById("f-titulo").value.trim();
+  if(!titulo){alert("Descreva o que aconteceu antes de salvar.");return;}
+  const erros=load();
+  erros.unshift({
+    id:Date.now(),
+    titulo,
+    area:document.getElementById("f-area").value,
+    status:document.getElementById("f-status").value,
+    mensagem:document.getElementById("f-mensagem").value.trim(),
+    solucao:document.getElementById("f-solucao").value.trim(),
+    data:new Date().toLocaleDateString("pt-BR"),
+  });
+  save(erros);
+  ["f-titulo","f-mensagem","f-solucao"].forEach(id=>document.getElementById(id).value="");
+  document.getElementById("f-area").value="python";
+  document.getElementById("f-status").value="pendente";
+  renderTudo();
+}
+
+function toggleStatus(id){
+  const erros=load();
+  const e=erros.find(x=>x.id===id);
+  if(e)e.status=e.status==="resolvido"?"pendente":"resolvido";
+  save(erros);renderTudo();
+}
+
+function deletar(id){
+  if(!confirm("Remover este erro do diário?"))return;
+  save(load().filter(x=>x.id!==id));
+  renderTudo();
+}
+
+function toggleCard(id){
+  document.getElementById("ec-"+id)?.classList.toggle("open");
+}
+
+function renderStats(){
+  const erros=load();
+  const total=erros.length;
+  const resolvidos=erros.filter(e=>e.status==="resolvido").length;
+  const pendentes=total-resolvidos;
+  document.getElementById("stats-row").innerHTML=[
+    {icon:`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`,bg:"#f0f0f8",ic:"#6b7280",v:total,l:"Registrados"},
+    {icon:`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,bg:"#dcfce7",ic:"#15803d",v:resolvidos,l:"Resolvidos"},
+    {icon:`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,bg:"#fef9c3",ic:"#a16207",v:pendentes,l:"Pendentes"},
+  ].map(s=>`
+    <div class="stat">
+      <div class="stat-icon" style="background:${s.bg};color:${s.ic}">${s.icon}</div>
+      <div><div class="stat-v">${s.v}</div><div class="stat-l">${s.l}</div></div>
+    </div>
+  `).join("");
+}
+
+function renderLista(){
+  const busca=document.getElementById("busca").value.toLowerCase();
+  const filtroArea=document.getElementById("filtro-area").value;
+  const filtroStatus=document.getElementById("filtro-status").value;
+  const erros=load().filter(e=>{
+    const mArea=filtroArea==="todos"||e.area===filtroArea;
+    const mStatus=filtroStatus==="todos"||e.status===filtroStatus;
+    const mBusca=!busca||e.titulo.toLowerCase().includes(busca)||(e.mensagem||"").toLowerCase().includes(busca)||(e.solucao||"").toLowerCase().includes(busca);
+    return mArea&&mStatus&&mBusca;
+  });
+
+  document.getElementById("count-label").textContent=`${erros.length} ${erros.length===1?"erro":"erros"} encontrados`;
+
+  if(!erros.length){
+    document.getElementById("erros-list").innerHTML=`
+      <div class="empty-state">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        <p>${load().length===0?"Nenhum erro registrado ainda":"Nenhum resultado para esse filtro"}</p>
+        <span>${load().length===0?"Quando travar em algum erro, registre aqui — vai poupar muito tempo no futuro.":"Tente outros filtros ou limpe a busca."}</span>
+      </div>`;
+    return;
+  }
+
+  document.getElementById("erros-list").innerHTML=erros.map(e=>`
+    <div class="erro-card ${e.status}" id="ec-${e.id}">
+      <div class="erro-header" onclick="toggleCard(${e.id})">
+        <div class="erro-status ${e.status==="resolvido"?"status-resolvido":"status-pendente"}">
+          ${e.status==="resolvido"
+            ?`<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`
+            :`<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`
+          }
+        </div>
+        <div class="erro-info">
+          <div class="erro-titulo">${e.titulo}</div>
+          <div class="erro-meta">
+            <span class="erro-data">${e.data}</span>
+            <span class="erro-tag tag-${e.area}">${AREA_LABELS[e.area]||e.area}</span>
+          </div>
+        </div>
+        <div class="erro-expand">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="erro-body">
+        ${e.mensagem?`
+        <div>
+          <div class="erro-section-title">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>
+            Mensagem de erro
+          </div>
+          <div class="erro-code">${e.mensagem.replace(/</g,"&lt;").replace(/>/g,"&gt;")}</div>
+        </div>`:""}
+        ${e.solucao?`
+        <div>
+          <div class="erro-section-title">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            O que tentei / como resolvi
+          </div>
+          <div class="erro-text">${e.solucao}</div>
+        </div>`:""}
+        <div class="erro-actions">
+          <button class="btn-sm ${e.status==="resolvido"?"":"success"}" onclick="toggleStatus(${e.id})">
+            ${e.status==="resolvido"
+              ?`<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Marcar pendente`
+              :`<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Marcar resolvido`
+            }
+          </button>
+          <button class="btn-sm danger" onclick="deletar(${e.id})">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+            Remover
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderTudo(){renderStats();renderLista();}
+renderTudo();
+</script>
+</body>
+</html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Glossário — Real Metais</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --verde:#00B74F;--verde-light:#e8f8f0;--verde-dark:#006B2E;
+  --azul:#112437;--cinza:#9696A0;--snow:#EAEAF4;--white:#fff;
+  --border:#e8e8f2;--shadow:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);
+  --radius:12px;
+}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--snow);color:var(--azul);min-height:100vh;padding:32px 16px}
+svg{display:block;flex-shrink:0}
+
+.container{max-width:860px;margin:0 auto}
+
+/* Header */
+.top-nav{display:flex;align-items:center;gap:12px;margin-bottom:32px}
+.back-btn{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--cinza);text-decoration:none;padding:7px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--white);transition:all .15s}
+.back-btn:hover{color:var(--azul);border-color:#c0c0d4}
+.page-title{font-size:22px;font-weight:800;letter-spacing:-.01em}
+.page-sub{font-size:13px;color:var(--cinza);margin-top:2px}
+
+/* Busca */
+.search-wrap{position:relative;margin-bottom:24px}
+.search-wrap svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--cinza)}
+.search-input{width:100%;padding:12px 14px 12px 42px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:14px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--azul);background:var(--white);outline:none;transition:border-color .15s;box-shadow:var(--shadow)}
+.search-input:focus{border-color:var(--verde)}
+.search-input::placeholder{color:#c4c4d4}
+
+/* Filtro de categoria */
+.cats{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.cat-btn{padding:6px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--white);font-size:12px;font-weight:600;color:var(--cinza);cursor:pointer;font-family:inherit;transition:all .15s}
+.cat-btn:hover{border-color:#c0c0d4;color:var(--azul)}
+.cat-btn.active{background:var(--azul);border-color:var(--azul);color:#fff}
+
+/* Contador */
+.count-label{font-size:12px;color:var(--cinza);margin-bottom:16px}
+
+/* Cards */
+.termos{display:flex;flex-direction:column;gap:10px}
+.termo-card{background:var(--white);border-radius:var(--radius);border:1.5px solid var(--border);box-shadow:var(--shadow);overflow:hidden;transition:box-shadow .15s}
+.termo-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.08),0 8px 24px rgba(0,0,0,.06)}
+.termo-header{display:flex;align-items:center;gap:14px;padding:16px 18px;cursor:pointer}
+.termo-nome{font-size:15px;font-weight:700;flex:1}
+.termo-cat{font-size:10px;font-weight:700;padding:3px 9px;border-radius:99px;flex-shrink:0}
+.cat-python{background:#dbeafe;color:#1d4ed8}
+.cat-web{background:#fce7f3;color:#9d174d}
+.cat-banco{background:#fef9c3;color:#a16207}
+.cat-react{background:#ede9fe;color:#7c3aed}
+.cat-git{background:#dcfce7;color:#15803d}
+.cat-auth{background:#fee2e2;color:#b91c1c}
+.cat-geral{background:#f1f5f9;color:#475569}
+.expand-icon{color:#c0c0d0;transition:transform .2s}
+.termo-card.open .expand-icon{transform:rotate(180deg)}
+
+.termo-body{display:none;border-top:1px solid var(--border);padding:16px 18px;display:none;flex-direction:column;gap:12px}
+.termo-card.open .termo-body{display:flex}
+
+.def-section{font-size:13px;color:#374151;line-height:1.7}
+.def-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--cinza);margin-bottom:6px;display:flex;align-items:center;gap:5px}
+
+.exemplo-box{background:#f8f9ff;border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:12px;color:#374151;line-height:1.6}
+.code-inline{font-family:'Courier New',monospace;background:#f0f0f8;border:1px solid #e0e0ee;border-radius:4px;padding:1px 5px;font-size:12px;color:#4b5563}
+.no-result{text-align:center;padding:48px 24px;color:var(--cinza)}
+.no-result svg{margin:0 auto 12px;opacity:.3}
+.no-result p{font-size:14px;font-weight:600;margin-bottom:4px;color:var(--azul)}
+.no-result span{font-size:13px}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="top-nav">
+    <a href="index.html" class="back-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Início
+    </a>
+    <div>
+      <div class="page-title">Glossário</div>
+      <div class="page-sub">Termos que você vai encontrar no projeto</div>
+    </div>
+  </div>
+
+  <div class="search-wrap">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input class="search-input" id="busca" placeholder="Buscar termo..." oninput="filtrar()">
+  </div>
+
+  <div class="cats" id="cats"></div>
+  <div class="count-label" id="count"></div>
+  <div class="termos" id="termos"></div>
+
+</div>
+<script>
+const TERMOS = [
+  // PYTHON
+  {nome:"async / await",cat:"python",
+   def:"Palavras-chave que permitem executar operações que levam tempo (como buscar dados no banco) sem travar o programa inteiro. async define uma função assíncrona, await pausa aquela função enquanto espera o resultado.",
+   exemplo:"No projeto: toda função que acessa o banco usa async def e await — por exemplo, buscar um usuário no banco seria await db.execute(...).",
+   onde:"backend/routers/usuarios.py"},
+  {nome:"def / return",cat:"python",
+   def:"def cria uma função — um bloco de código com nome que pode ser chamado várias vezes. return diz qual valor a função entrega para quem a chamou.",
+   exemplo:"def hash_senha(senha: str) -> str: ... return bcrypt.hash(senha) — recebe a senha, devolve o hash.",
+   onde:"backend/core/security.py"},
+  {nome:"class",cat:"python",
+   def:"Um molde para criar objetos. Define quais atributos (dados) e métodos (funções) um tipo de coisa tem.",
+   exemplo:"class Usuario(Base): — define como um usuário é estruturado no banco. Cada linha é um campo da tabela.",
+   onde:"backend/models/usuario.py"},
+  {nome:"decorator (@)",cat:"python",
+   def:"Um atalho que modifica o comportamento de uma função. Aparece com @ antes do nome. No FastAPI, @router.get('/') registra uma função como endpoint HTTP.",
+   exemplo:"@router.get('/setores') def listar_setores(): — o decorator registra essa função na URL /setores com método GET.",
+   onde:"backend/routers/setores.py"},
+  {nome:"Pydantic / BaseModel",cat:"python",
+   def:"Biblioteca de validação de dados. Quando o frontend manda um JSON para o backend, o Pydantic verifica se os campos estão corretos — tipo certo, tamanho máximo, campos obrigatórios.",
+   exemplo:"class UsuarioCriar(BaseModel): nome: str = Field(max_length=150) — se o nome vier com 200 caracteres, o Pydantic rejeita automaticamente com erro 422.",
+   onde:"backend/schemas/usuario.py"},
+  {nome:"SQLAlchemy / ORM",cat:"python",
+   def:"ORM significa Object-Relational Mapper. É uma biblioteca que permite trabalhar com o banco de dados usando classes Python em vez de escrever SQL puro. Cada classe vira uma tabela.",
+   exemplo:"usuario.nome = 'Maria' e depois await db.flush() — o SQLAlchemy converte isso em UPDATE rm_usuarios SET nome='Maria' WHERE id=...",
+   onde:"backend/models/usuario.py"},
+  {nome:"Depends()",cat:"python",
+   def:"Mecanismo do FastAPI para injetar dependências. Antes de rodar uma função de endpoint, o FastAPI executa tudo que está dentro de Depends() — como verificar autenticação.",
+   exemplo:"async def listar(db = Depends(get_db), usuario = Depends(obter_usuario_atual)) — garante que só chega aqui quem está logado e com sessão de banco disponível.",
+   onde:"backend/routers/usuarios.py"},
+  {nome:"Migration (Alembic)",cat:"banco",
+   def:"Script que modifica a estrutura do banco de dados de forma controlada e reversível. Em vez de alterar o banco manualmente, você cria um arquivo de migration que registra a mudança.",
+   exemplo:"001_initial_schema.py cria as tabelas. 006_sessao_invalidada_em.py adiciona uma coluna. Cada um tem upgrade() para aplicar e downgrade() para desfazer.",
+   onde:"backend/database/migrations/versions/"},
+  {nome:"SELECT / WHERE / JOIN",cat:"banco",
+   def:"Comandos SQL para buscar dados. SELECT define quais colunas trazer, WHERE filtra as linhas, JOIN combina dados de tabelas diferentes.",
+   exemplo:"SELECT u.nome, p.nome FROM rm_usuarios u JOIN rm_perfis p ON p.id = u.perfil_id WHERE u.ativo = true — busca nome do usuário e do perfil só para usuários ativos.",
+   onde:"backend/database/migrations/versions/001_initial_schema.py"},
+  {nome:"Soft delete (campo ativo)",cat:"banco",
+   def:"Padrão onde registros nunca são deletados do banco. Em vez de DELETE, o campo ativo é marcado como false. Preserva o histórico e permite auditoria.",
+   exemplo:"No projeto todas as tabelas têm ativo BOOLEAN. Ao desativar um usuário: usuario.ativo = False — nunca DELETE FROM rm_usuarios.",
+   onde:"backend/models/usuario.py"},
+  {nome:"Chave primária (PK)",cat:"banco",
+   def:"Campo único que identifica cada linha de uma tabela. Normalmente é um número inteiro que aumenta automaticamente (id).",
+   exemplo:"id: Mapped[int] = mapped_column(Integer, primary_key=True) — cada usuário tem um id único.",
+   onde:"backend/models/usuario.py"},
+  {nome:"Chave estrangeira (FK)",cat:"banco",
+   def:"Campo que referencia a chave primária de outra tabela. Cria um vínculo entre as tabelas.",
+   exemplo:"perfil_id: int (FK → rm_perfis) — o perfil_id do usuário aponta para um id na tabela rm_perfis.",
+   onde:"backend/models/usuario.py"},
+  // WEB
+  {nome:"HTTP / REST",cat:"web",
+   def:"HTTP é o protocolo de comunicação da web. REST é um estilo de organizar APIs usando métodos HTTP: GET (buscar), POST (criar), PATCH (editar), DELETE (remover).",
+   exemplo:"GET /usuarios → lista usuários. POST /usuarios → cria usuário. PATCH /usuarios/5 → edita o usuário de id 5.",
+   onde:"backend/routers/usuarios.py"},
+  {nome:"Status code",cat:"web",
+   def:"Número que o servidor manda junto com a resposta para indicar o resultado. 200 = ok, 201 = criado, 400 = erro do cliente, 401 = não autenticado, 403 = sem permissão, 404 = não encontrado, 422 = dados inválidos, 500 = erro do servidor.",
+   exemplo:"Se você mandar uma senha curta demais, o Pydantic rejeita e o FastAPI responde 422 Unprocessable Content.",
+   onde:"backend/routers/"},
+  {nome:"JSON",cat:"web",
+   def:"Formato de texto para trocar dados entre cliente e servidor. Usa chaves {} para objetos e colchetes [] para listas.",
+   exemplo:'{\"nome\": \"Ana\", \"ativo\": true, \"perfil\": {\"codigo\": \"gestor\"}} — isso é o que o backend retorna quando você busca um usuário.',
+   onde:"frontend-react/src/lib/api.ts"},
+  {nome:"API",cat:"web",
+   def:"Interface que permite que dois sistemas conversem. O backend deste projeto é uma API — ele expõe URLs que o frontend chama para buscar e salvar dados.",
+   exemplo:"O frontend chama api.get('/faturamento/kpis') e o backend responde com um JSON com os números do mês.",
+   onde:"frontend-react/src/lib/api.ts"},
+  {nome:"Cookie (httpOnly)",cat:"auth",
+   def:"Pequeno arquivo que o servidor manda para o navegador guardar. httpOnly significa que o JavaScript não consegue ler — só o navegador envia automaticamente nas requisições. Mais seguro contra ataques XSS.",
+   exemplo:"Após o login, o backend manda Set-Cookie: access_token=... HttpOnly. O navegador guarda e envia em toda requisição seguinte automaticamente.",
+   onde:"backend/routers/auth.py"},
+  {nome:"JWT (Token)",cat:"auth",
+   def:"JSON Web Token — um 'crachá digital' codificado que o servidor emite após o login. Contém informações como o id do usuário e quando expira. O servidor verifica o token em cada requisição.",
+   exemplo:"O access_token dura 60 minutos. O refresh_token dura 7 dias e serve para emitir um novo access_token sem precisar fazer login novamente.",
+   onde:"backend/core/security.py"},
+  {nome:"Autenticação vs Autorização",cat:"auth",
+   def:"Autenticação = provar quem você é (login com email e senha). Autorização = verificar o que você pode fazer (seu perfil tem acesso a este módulo?).",
+   exemplo:"Você se autentica com email+senha. Depois o sistema autoriza: seu setor tem acesso ao módulo Qualidade? Seu perfil pode excluir registros?",
+   onde:"backend/middlewares/auth_middleware.py"},
+  {nome:"ABAC / Casbin",cat:"auth",
+   def:"Attribute-Based Access Control — controle de acesso baseado em atributos. Casbin é a biblioteca usada. Define políticas do tipo: perfil X pode fazer ação Y no módulo Z.",
+   exemplo:"Um operador pode ler registros de qualidade mas não pode excluir. Um gestor pode fazer tudo. O Casbin verifica isso automaticamente.",
+   onde:"backend/core/abac.py"},
+  // REACT
+  {nome:"Componente",cat:"react",
+   def:"Função JavaScript que retorna HTML (JSX). É o bloco fundamental do React — tudo na tela é um componente. Podem receber dados via props e ter estado interno.",
+   exemplo:"function TrocarSenhaPage() { return <form>...</form> } — a página de trocar senha é um componente.",
+   onde:"frontend-react/src/pages/auth/TrocarSenhaPage.tsx"},
+  {nome:"useState",cat:"react",
+   def:"Hook do React para guardar valores que mudam e atualizar a tela automaticamente quando mudam. const [valor, setValor] = useState(inicial).",
+   exemplo:"const [salvando, setSalvando] = useState(false) — começa falso, vira true quando o formulário é enviado, volta a false quando termina.",
+   onde:"frontend-react/src/pages/auth/TrocarSenhaPage.tsx"},
+  {nome:"useEffect",cat:"react",
+   def:"Hook para executar código em momentos específicos: quando o componente aparece na tela, quando um valor muda, ou quando o componente sai da tela.",
+   exemplo:"useEffect(() => { buscarDados() }, [filtro]) — sempre que o filtro mudar, busca os dados novamente.",
+   onde:"frontend-react/src/pages/faturamento/"},
+  {nome:"Props",cat:"react",
+   def:"Dados passados de um componente pai para um filho. Como parâmetros de função, mas para componentes.",
+   exemplo:"<Button isLoading={salvando} /> — o componente Button recebe isLoading como prop e mostra um spinner se for true.",
+   onde:"frontend-react/src/components/base/buttons/"},
+  {nome:"Zustand / Store",cat:"react",
+   def:"Biblioteca de gerenciamento de estado global. Guarda informações que vários componentes precisam — como o usuário logado — sem precisar passar props por toda a árvore.",
+   exemplo:"useAuthStore((s) => s.usuario) — qualquer componente pode pegar o usuário logado diretamente do store, sem receber via props.",
+   onde:"frontend-react/src/stores/auth.ts"},
+  {nome:"React Router",cat:"react",
+   def:"Biblioteca que controla a navegação no React. Define qual componente mostrar para cada URL, sem recarregar a página.",
+   exemplo:"<Route path='/faturamento' element={<FaturamentoPage/>}/> — quando a URL for /faturamento, mostra o componente FaturamentoPage.",
+   onde:"frontend-react/src/App.tsx"},
+  {nome:"TypeScript",cat:"react",
+   def:"Versão do JavaScript com tipos. Você declara que uma variável é string ou number e o editor avisa se você tentar usar errado. Evita muitos bugs antes de rodar o código.",
+   exemplo:"interface Usuario { nome: string; ativo: boolean } — se você tentar acessar usuario.cargo (que não existe), o TypeScript avisa antes de rodar.",
+   onde:"frontend-react/src/types/auth.ts"},
+  {nome:"fetch / api.ts",cat:"react",
+   def:"fetch é a função nativa do navegador para fazer requisições HTTP. No projeto, api.ts é um wrapper em torno do fetch que adiciona cookies, trata erros 401 e faz refresh automático do token.",
+   exemplo:"api.get('/usuarios/me') — internamente chama fetch com credentials: 'include' para enviar cookies, e se vier 401, tenta renovar o token antes de falhar.",
+   onde:"frontend-react/src/lib/api.ts"},
+  // GIT
+  {nome:"commit",cat:"git",
+   def:"Um ponto salvo na história do projeto. Registra quais arquivos mudaram, o que mudou e quem fez. A mensagem do commit descreve o motivo da mudança.",
+   exemplo:"git commit -m 'feat(auth): adicionar troca de senha obrigatória' — o prefixo feat indica que é uma funcionalidade nova.",
+   onde:".claude/context/git-workflow.md"},
+  {nome:"branch",cat:"git",
+   def:"Uma linha paralela de desenvolvimento. Permite trabalhar numa funcionalidade sem afetar o código principal. No projeto, cada feature ou correção tem sua própria branch.",
+   exemplo:"git checkout -b feature/nova-funcionalidade — cria e entra numa branch nova a partir da branch atual.",
+   onde:".claude/context/git-workflow.md"},
+  {nome:"pull request (PR)",cat:"git",
+   def:"Proposta de mergear uma branch no código principal. Permite revisão antes de integrar. No projeto, todo código passa por PR antes de entrar em dev ou main.",
+   exemplo:"Você termina a feature na branch feature/x, abre um PR apontando para dev, o Vinicius revisa e aprova, aí é mergeado.",
+   onde:".claude/context/git-workflow.md"},
+  {nome:"merge",cat:"git",
+   def:"Combinar o código de duas branches. Quando um PR é aprovado, o código da feature branch é mergeado na branch de destino (dev ou main).",
+   exemplo:"Após aprovação do PR, git merge feature/x integra as mudanças em dev.",
+   onde:".claude/context/git-workflow.md"},
+  {nome:"git pull",cat:"git",
+   def:"Baixar as últimas mudanças do repositório remoto (GitHub) para o seu computador local.",
+   exemplo:"Antes de começar a trabalhar: git checkout dev && git pull — garante que você está com o código mais atualizado.",
+   onde:".claude/context/git-workflow.md"},
+  // GERAL
+  {nome:"Terminal / CLI",cat:"geral",
+   def:"Interface de texto para dar comandos ao computador. Mais preciso e poderoso que clicar em ícones. Programadores usam o terminal para rodar scripts, navegar em pastas e usar ferramentas como git e python.",
+   exemplo:"python ola.py — roda o arquivo ola.py. cd backend — entra na pasta backend. ls — lista os arquivos da pasta atual.",
+   onde:"—"},
+  {nome:"Ambiente virtual (venv)",cat:"geral",
+   def:"Espaço isolado de pacotes Python para um projeto. Evita conflito entre versões de bibliotecas de projetos diferentes.",
+   exemplo:"python -m venv venv && venv\\Scripts\\activate — cria e ativa o ambiente. Depois pip install instala só nesse ambiente.",
+   onde:"backend/requirements.txt"},
+  {nome:"Variável de ambiente (.env)",cat:"geral",
+   def:"Configurações sensíveis (senhas, chaves de API, URLs de banco) que ficam fora do código, num arquivo .env que não vai para o git. O código lê essas variáveis em runtime.",
+   exemplo:"DATABASE_URL=postgresql+asyncpg://usuario:senha@localhost/db — a URL do banco fica no .env, não hardcoded no código.",
+   onde:"backend/core/config.py"},
+  {nome:"Swagger / /docs",cat:"geral",
+   def:"Documentação automática da API gerada pelo FastAPI. Acessível em localhost:8000/docs. Lista todos os endpoints, permite testar requisições diretamente no navegador.",
+   exemplo:"Abra localhost:8000/docs, encontre GET /setores, clique em Try it out → Execute — você vê a requisição e a resposta real.",
+   onde:"backend/main.py"},
+  {nome:"localhost",cat:"geral",
+   def:"Endereço que aponta para o seu próprio computador. Quando o backend está rodando localmente, você acessa em localhost:8000. Só você consegue ver — não está na internet.",
+   exemplo:"uvicorn main:app --port 8000 → acesse localhost:8000/docs para ver a API funcionando na sua máquina.",
+   onde:"—"},
+];
+
+const CATS = [
+  {id:"todos",label:"Todos"},
+  {id:"python",label:"Python"},
+  {id:"banco",label:"Banco de dados"},
+  {id:"web",label:"Web / HTTP"},
+  {id:"auth",label:"Autenticação"},
+  {id:"react",label:"React"},
+  {id:"git",label:"Git"},
+  {id:"geral",label:"Geral"},
+];
+
+let catAtiva="todos", busca="";
+
+function catClass(cat){return`cat-${cat}`;}
+
+function renderCats(){
+  document.getElementById("cats").innerHTML=CATS.map(c=>`
+    <button class="cat-btn ${catAtiva===c.id?"active":""}" onclick="setaCat('${c.id}')">${c.label}</button>
+  `).join("");
+}
+
+function setaCat(id){catAtiva=id;filtrar();}
+
+function filtrar(){
+  busca=document.getElementById("busca").value.toLowerCase();
+  renderCats();
+  const filtrados=TERMOS.filter(t=>{
+    const matchCat=catAtiva==="todos"||t.cat===catAtiva;
+    const matchBusca=!busca||t.nome.toLowerCase().includes(busca)||t.def.toLowerCase().includes(busca)||t.exemplo.toLowerCase().includes(busca);
+    return matchCat&&matchBusca;
+  });
+  document.getElementById("count").textContent=`${filtrados.length} ${filtrados.length===1?"termo":"termos"} encontrados`;
+  if(filtrados.length===0){
+    document.getElementById("termos").innerHTML=`
+      <div class="no-result">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <p>Nenhum termo encontrado</p>
+        <span>Tente outra palavra ou categoria</span>
+      </div>`;
+    return;
+  }
+  document.getElementById("termos").innerHTML=filtrados.map((t,i)=>`
+    <div class="termo-card" id="tc-${i}">
+      <div class="termo-header" onclick="toggleTermo('tc-${i}')">
+        <div class="termo-nome">${t.nome}</div>
+        <span class="termo-cat ${catClass(t.cat)}">${CATS.find(c=>c.id===t.cat)?.label||t.cat}</span>
+        <div class="expand-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="termo-body">
+        <div>
+          <div class="def-label">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            O que é
+          </div>
+          <div class="def-section">${t.def}</div>
+        </div>
+        <div>
+          <div class="def-label">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            No projeto
+          </div>
+          <div class="exemplo-box">${t.exemplo}${t.onde&&t.onde!=="—"?`<br><br>Onde ver: <span class="code-inline">${t.onde}</span>`:""}
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join("");
+}
+
+function toggleTermo(id){
+  document.getElementById(id).classList.toggle("open");
+}
+
+renderCats();filtrar();
+</script>
+</body>
+</html>

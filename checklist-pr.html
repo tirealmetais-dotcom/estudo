@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Checklist de PR — Real Metais</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --verde:#00B74F;--verde-light:#e8f8f0;--verde-dark:#006B2E;
+  --azul:#112437;--cinza:#9696A0;--snow:#EAEAF4;--white:#fff;
+  --border:#e8e8f2;--shadow:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);
+  --radius:12px;
+}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--snow);color:var(--azul);min-height:100vh;padding:32px 16px}
+svg{display:block;flex-shrink:0}
+button{font-family:'Plus Jakarta Sans',sans-serif}
+
+.container{max-width:760px;margin:0 auto}
+
+.top-nav{display:flex;align-items:center;gap:12px;margin-bottom:32px}
+.back-btn{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--cinza);text-decoration:none;padding:7px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--white);transition:all .15s}
+.back-btn:hover{color:var(--azul);border-color:#c0c0d4}
+.page-title{font-size:22px;font-weight:800;letter-spacing:-.01em}
+.page-sub{font-size:13px;color:var(--cinza);margin-top:2px}
+
+/* Barra de progresso */
+.pr-progress{background:var(--white);border-radius:var(--radius);border:1.5px solid var(--border);box-shadow:var(--shadow);padding:18px 20px;margin-bottom:20px}
+.pr-progress-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.pr-progress-top span{font-size:13px;font-weight:700}
+.pr-progress-pct{font-size:13px;font-weight:800;color:var(--verde)}
+.pr-bar-track{background:var(--snow);border-radius:99px;height:8px;overflow:hidden}
+.pr-bar-fill{height:100%;background:var(--verde);border-radius:99px;transition:width .4s ease}
+
+/* Status badge */
+.pr-status{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:99px;font-size:12px;font-weight:700;margin-bottom:20px}
+.pr-status.bloqueado{background:#fef2f2;color:#b91c1c;border:1.5px solid #fecaca}
+.pr-status.atencao{background:#fef9c3;color:#a16207;border:1.5px solid #fde68a}
+.pr-status.pronto{background:#dcfce7;color:#15803d;border:1.5px solid #a7f3d0}
+
+/* Seções */
+.secao{background:var(--white);border-radius:var(--radius);border:1.5px solid var(--border);box-shadow:var(--shadow);margin-bottom:14px;overflow:hidden}
+.secao-header{display:flex;align-items:center;gap:12px;padding:16px 18px;cursor:pointer;transition:background .12s}
+.secao-header:hover{background:#fafbff}
+.secao-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.si1{background:#dbeafe;color:#1d4ed8}
+.si2{background:#fce7f3;color:#9d174d}
+.si3{background:#dcfce7;color:#15803d}
+.si4{background:#fef9c3;color:#a16207}
+.si5{background:#ede9fe;color:#7c3aed}
+.secao-info{flex:1}
+.secao-titulo{font-size:14px;font-weight:700;margin-bottom:2px}
+.secao-sub{font-size:12px;color:var(--cinza)}
+.secao-mini{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.secao-mini-count{font-size:11px;font-weight:700;color:var(--cinza)}
+.secao-mini-dots{display:flex;gap:3px}
+.sdot{width:7px;height:7px;border-radius:50%;background:#e5e5ee;transition:background .2s}
+.sdot.done{background:var(--verde)}
+.chevron{color:#c0c0d0;transition:transform .2s;flex-shrink:0}
+.secao.open .chevron{transform:rotate(180deg)}
+
+.secao-items{display:none;border-top:1px solid var(--border)}
+.secao.open .secao-items{display:block}
+
+/* Item */
+.item{display:flex;align-items:flex-start;gap:12px;padding:13px 18px;border-bottom:1px solid #f8f8fc;cursor:pointer;transition:background .12s}
+.item:last-child{border-bottom:none}
+.item:hover{background:#fafbff}
+.item.done{opacity:.6}
+.item-check{width:20px;height:20px;border-radius:5px;border:1.5px solid #d0d0e4;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:all .15s;background:var(--white)}
+.item:hover .item-check{border-color:var(--verde)}
+.item.done .item-check{background:var(--verde);border-color:var(--verde)}
+.item-checkmark{display:none}
+.item.done .item-checkmark{display:block}
+.item-body{flex:1}
+.item-titulo{font-size:13px;font-weight:600;margin-bottom:2px;transition:color .15s}
+.item.done .item-titulo{text-decoration:line-through;color:var(--cinza)}
+.item-desc{font-size:12px;color:var(--cinza);line-height:1.5}
+.item-severity{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.sev-alta{background:#ef4444}
+.sev-media{background:#f59e0b}
+.sev-baixa{background:#6ee7b7}
+
+/* Legenda severidade */
+.legenda{display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.leg-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--cinza)}
+.leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* Ações */
+.actions{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap}
+.btn-reset{display:flex;align-items:center;gap:6px;padding:9px 16px;border:1.5px solid var(--border);border-radius:9px;background:var(--white);font-size:13px;font-weight:600;color:var(--cinza);cursor:pointer;transition:all .15s}
+.btn-reset:hover{border-color:#c0c0d4;color:var(--azul)}
+.btn-expandir{display:flex;align-items:center;gap:6px;padding:9px 16px;border:1.5px solid var(--border);border-radius:9px;background:var(--white);font-size:13px;font-weight:600;color:var(--cinza);cursor:pointer;transition:all .15s}
+.btn-expandir:hover{border-color:#c0c0d4;color:var(--azul)}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="top-nav">
+    <a href="index.html" class="back-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Início
+    </a>
+    <div>
+      <div class="page-title">Checklist de PR</div>
+      <div class="page-sub">Verifique tudo antes de abrir um Pull Request</div>
+    </div>
+  </div>
+
+  <!-- Progresso -->
+  <div class="pr-progress">
+    <div class="pr-progress-top">
+      <span id="prog-text">Itens verificados</span>
+      <span class="pr-progress-pct" id="prog-pct">0%</span>
+    </div>
+    <div class="pr-bar-track"><div class="pr-bar-fill" id="prog-bar" style="width:0%"></div></div>
+  </div>
+
+  <div id="status-badge"></div>
+
+  <div class="actions">
+    <button class="btn-reset" onclick="resetar()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+      Reiniciar para novo PR
+    </button>
+    <button class="btn-expandir" onclick="expandirTudo()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      Expandir tudo
+    </button>
+  </div>
+
+  <div class="legenda">
+    <div class="leg-item"><div class="leg-dot" style="background:#ef4444"></div>Obrigatório — bloqueia o PR</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#f59e0b"></div>Importante — revisar com atenção</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#6ee7b7"></div>Recomendado — boas práticas</div>
+  </div>
+
+  <div id="secoes"></div>
+</div>
+
+<script>
+const SECOES = [
+  {
+    titulo:"Antes de commitar",
+    sub:"O básico — verificar o que está prestes a entrar no repositório",
+    icon:"si1",
+    iconSvg:`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>`,
+    items:[
+      {t:"Branch criada a partir de dev (não de main)",d:"Confira com: git log --oneline dev...HEAD",sev:"alta"},
+      {t:"Nenhum arquivo sensível incluído (.env, chaves, senhas)",d:"git status e git diff para revisar tudo que vai entrar",sev:"alta"},
+      {t:"Sem arquivos de debug esquecidos (print(), console.log())",d:"Esses logs aparecem em produção e poluem os logs do servidor",sev:"media"},
+      {t:"Sem arquivos desnecessários (.DS_Store, __pycache__, node_modules)",d:"Verifique o .gitignore — ele deve excluir esses automaticamente",sev:"media"},
+      {t:"Todos os arquivos modificados foram adicionados (git add)",d:"git status deve mostrar tudo em verde antes do commit",sev:"alta"},
+    ]
+  },
+  {
+    titulo:"Mensagem de commit",
+    sub:"O commit conta a história do que foi feito — precisa ser claro",
+    icon:"si2",
+    iconSvg:`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`,
+    items:[
+      {t:"Prefixo correto: feat, fix, docs, refactor, test",d:"feat = funcionalidade nova | fix = correção de bug | docs = documentação",sev:"alta"},
+      {t:"Escopo entre parênteses indica o módulo",d:"Ex: feat(qualidade): adicionar filtro por data — fica mais fácil de rastrear",sev:"media"},
+      {t:"Descrição em português, minúscula, sem ponto final",d:"O padrão do projeto é em português — ex: fix(auth): corrigir token expirado",sev:"media"},
+      {t:"Descrição explica o que mudou, não apenas o que foi feito",d:"'adicionar campo observacao' é melhor que 'alterar arquivo usuario.py'",sev:"baixa"},
+    ]
+  },
+  {
+    titulo:"Código",
+    sub:"Revisão do que foi escrito antes de expor para o time",
+    icon:"si3",
+    iconSvg:`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`,
+    items:[
+      {t:"Variáveis e funções com nomes em português e descritivos",d:"O padrão do projeto é português. 'usuario_logado' é melhor que 'u' ou 'user'",sev:"media"},
+      {t:"Sem código comentado ou deixado para depois (// TODO antigo)",d:"Se não vai entrar agora, não entra. Código comentado confunde quem lê depois",sev:"baixa"},
+      {t:"Backend: endpoints novos têm require_acao() ou exigir_admin()",d:"Nenhum endpoint deve ser acessível sem verificação de autenticação",sev:"alta"},
+      {t:"Backend: dados de entrada validados via schema Pydantic",d:"Nunca aceitar dict ou Any como entrada — sempre um BaseModel específico",sev:"alta"},
+      {t:"Frontend: chamadas à API feitas via api.ts, não fetch direto",d:"O api.ts garante cookies, refresh automático e tratamento de erro padrão",sev:"alta"},
+      {t:"Soft delete respeitado: ativo = False em vez de DELETE",d:"O projeto nunca deleta registros do banco — verifica se seguiu esse padrão",sev:"alta"},
+      {t:"Queries sempre com filtro ativo = true",d:"Registros desativados não devem aparecer nas listagens",sev:"media"},
+    ]
+  },
+  {
+    titulo:"Banco de dados",
+    sub:"Se a mudança afeta a estrutura do banco",
+    icon:"si4",
+    iconSvg:`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>`,
+    items:[
+      {t:"Campo novo no model tem migration correspondente criada",d:"Nunca alterar o banco manualmente — sempre via migration Alembic",sev:"alta"},
+      {t:"Migration usa ADD COLUMN IF NOT EXISTS (idempotente)",d:"Garante que rodar duas vezes não quebra nada",sev:"media"},
+      {t:"downgrade() está implementado e desfaz o que upgrade() fez",d:"Permite reverter a migration se algo der errado em produção",sev:"media"},
+      {t:"Tabela nova tem prefixo rm_ e campo ativo BOOLEAN",d:"Padrão do projeto: rm_nome_tabela com soft delete",sev:"alta"},
+      {t:"Migration testada localmente com alembic upgrade head",d:"Rode antes do PR — migration com erro bloqueia o deploy",sev:"alta"},
+    ]
+  },
+  {
+    titulo:"Pull Request",
+    sub:"A proposta em si — o que o revisor vai ver",
+    icon:"si5",
+    iconSvg:`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 009 9"/></svg>`,
+    items:[
+      {t:"PR apontando para dev (não para main)",d:"Só hotfixes urgentes vão direto para main — o normal é dev",sev:"alta"},
+      {t:"Título do PR descreve o que a mudança faz",d:"'feat(qualidade): adicionar filtro por data no relatório' — claro e específico",sev:"media"},
+      {t:"Descrição explica o problema que foi resolvido ou o que foi adicionado",d:"O revisor precisa entender o contexto sem precisar perguntar",sev:"media"},
+      {t:"Testou manualmente no ambiente local antes de abrir",d:"Abrir o sistema e confirmar que funciona — não só o código compila",sev:"alta"},
+      {t:"Branch está atualizada com dev (sem conflitos)",d:"git pull origin dev antes de abrir o PR evita conflitos na revisão",sev:"media"},
+      {t:"PR não mistura múltiplas features sem relação",d:"Um PR = uma mudança. Facilita revisão e reversão se necessário",sev:"baixa"},
+    ]
+  },
+];
+
+const KEY="rm-pr-checklist-v1";
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch{return{}}}
+function save(d){localStorage.setItem(KEY,JSON.stringify(d))}
+
+function itemKey(si,ii){return`${si}-${ii}`;}
+
+function toggleItem(si,ii){
+  const d=load();const k=itemKey(si,ii);d[k]=!d[k];save(d);render();
+  const secao=document.getElementById(`sec-${si}`);
+  if(secao)secao.classList.add("open");
+}
+
+function toggleSecao(si){
+  document.getElementById(`sec-${si}`)?.classList.toggle("open");
+}
+
+function expandirTudo(){
+  SECOES.forEach((_,si)=>document.getElementById(`sec-${si}`)?.classList.add("open"));
+}
+
+function resetar(){
+  if(!confirm("Reiniciar todos os itens para um novo PR?"))return;
+  localStorage.removeItem(KEY);render();
+}
+
+function calcProg(){
+  const d=load();let total=0,feito=0;
+  SECOES.forEach((s,si)=>s.items.forEach((_,ii)=>{total++;if(d[itemKey(si,ii)])feito++;}));
+  return{total,feito,pct:Math.round(feito/total*100)};
+}
+
+function render(){
+  const d=load();
+  const{total,feito,pct}=calcProg();
+
+  document.getElementById("prog-text").textContent=`${feito} de ${total} itens verificados`;
+  document.getElementById("prog-pct").textContent=pct+"%";
+  document.getElementById("prog-bar").style.width=pct+"%";
+
+  const altasPendentes=SECOES.flatMap((s,si)=>s.items.map((it,ii)=>({...it,k:itemKey(si,ii)}))).filter(x=>x.sev==="alta"&&!d[x.k]).length;
+  const badge=document.getElementById("status-badge");
+  if(altasPendentes>0){
+    badge.innerHTML=`<div class="pr-status bloqueado"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>${altasPendentes} ${altasPendentes===1?"item obrigatório pendente":"itens obrigatórios pendentes"}</div>`;
+  } else if(pct<100){
+    badge.innerHTML=`<div class="pr-status atencao"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Obrigatórios ok — revise os recomendados</div>`;
+  } else {
+    badge.innerHTML=`<div class="pr-status pronto"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Tudo verificado — PR pronto para abrir</div>`;
+  }
+
+  document.getElementById("secoes").innerHTML=SECOES.map((sec,si)=>{
+    const feitos=sec.items.filter((_,ii)=>d[itemKey(si,ii)]).length;
+    const dots=sec.items.map((_,ii)=>`<div class="sdot ${d[itemKey(si,ii)]?"done":""}"></div>`).join("");
+    const isOpen=document.getElementById(`sec-${si}`)?.classList.contains("open");
+    return`
+      <div class="secao ${isOpen?"open":""}" id="sec-${si}">
+        <div class="secao-header" onclick="toggleSecao(${si})">
+          <div class="secao-icon ${sec.icon}">${sec.iconSvg}</div>
+          <div class="secao-info">
+            <div class="secao-titulo">${sec.titulo}</div>
+            <div class="secao-sub">${sec.sub}</div>
+          </div>
+          <div class="secao-mini">
+            <span class="secao-mini-count">${feitos}/${sec.items.length}</span>
+            <div class="secao-mini-dots">${dots}</div>
+          </div>
+          <div class="chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+        </div>
+        <div class="secao-items">
+          ${sec.items.map((item,ii)=>`
+            <div class="item ${d[itemKey(si,ii)]?"done":""}" onclick="toggleItem(${si},${ii})">
+              <div class="item-severity sev-${item.sev}"></div>
+              <div class="item-check">
+                <div class="item-checkmark">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+              </div>
+              <div class="item-body">
+                <div class="item-titulo">${item.t}</div>
+                <div class="item-desc">${item.d}</div>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+render();
+</script>
+</body>
+</html>

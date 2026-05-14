@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Plano de Estudos — Real Metais</title>
+<title>Central de Estudos — Real Metais</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -14,819 +14,273 @@
   --azul:#112437;--azul2:#1a3350;
   --cinza:#9696A0;--snow:#EAEAF4;--white:#fff;
   --border:#e8e8f2;--text-soft:#6b7280;
-  --radius:12px;--shadow:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);
+  --radius:14px;--shadow:0 1px 4px rgba(0,0,0,.06),0 4px 20px rgba(0,0,0,.06);
 }
 body{font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--snow);color:var(--azul);min-height:100vh;font-size:14px}
 svg{display:block;flex-shrink:0}
+a{text-decoration:none;color:inherit}
 
-/* ── LAYOUT ── */
-.layout{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+/* ── PAGE ── */
+.page{max-width:900px;margin:0 auto;padding:48px 24px 80px}
 
-/* ══ SIDEBAR ══ */
-.sidebar{background:var(--azul);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.1) transparent}
-.sidebar::-webkit-scrollbar{width:4px}
-.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px}
+/* ── HEADER ── */
+.header{display:flex;align-items:center;gap:16px;margin-bottom:48px}
+.logo{width:44px;height:44px;background:var(--azul);border-radius:12px;display:flex;align-items:center;justify-content:center}
+.header-text h1{font-size:22px;font-weight:800;color:var(--azul)}
+.header-text p{font-size:13px;color:var(--text-soft);margin-top:2px}
 
-.sb-top{padding:24px 20px 0}
-.sb-brand{display:flex;align-items:center;gap:10px;margin-bottom:28px}
-.sb-brand-dot{width:8px;height:8px;border-radius:50%;background:var(--verde);flex-shrink:0}
-.sb-brand span{font-size:11px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.08em;text-transform:uppercase}
+/* ── PROGRESS BANNER ── */
+.progress-banner{background:var(--azul);border-radius:var(--radius);padding:28px 32px;margin-bottom:40px;display:flex;align-items:center;gap:32px}
+.pb-ring{flex-shrink:0;position:relative;width:72px;height:72px}
+.pb-ring svg{width:72px;height:72px}
+.pb-ring-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;color:#fff}
+.pb-info{flex:1}
+.pb-info h2{font-size:18px;font-weight:700;color:#fff;margin-bottom:4px}
+.pb-info p{font-size:13px;color:rgba(255,255,255,.55)}
+.pb-bar-wrap{margin-top:14px}
+.pb-bar-label{display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,.5);margin-bottom:6px}
+.pb-bar{background:rgba(255,255,255,.12);border-radius:99px;height:7px;overflow:hidden}
+.pb-bar-fill{background:var(--verde);height:100%;border-radius:99px;transition:width .5s ease}
 
-/* Anel de progresso */
-.ring-wrap{display:flex;flex-direction:column;align-items:center;padding:4px 0 20px}
-.ring-svg-wrap{position:relative;width:100px;height:100px;margin-bottom:10px}
-.ring-svg{transform:rotate(-90deg)}
-.ring-bg{fill:none;stroke:rgba(255,255,255,.07);stroke-width:7}
-.ring-fg{fill:none;stroke:var(--verde);stroke-width:7;stroke-linecap:round;transition:stroke-dashoffset .7s cubic-bezier(.4,0,.2,1)}
-.ring-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
-.ring-pct{font-size:24px;font-weight:800;color:#fff;line-height:1}
-.ring-sub{font-size:10px;color:rgba(255,255,255,.35);font-weight:500}
-.ring-label{font-size:12px;color:rgba(255,255,255,.4);text-align:center;line-height:1.4}
+/* ── GRID ── */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
 
-.sb-divider{height:1px;background:rgba(255,255,255,.07);margin:4px 20px 4px}
+/* ── CARD ── */
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:16px;transition:transform .15s,box-shadow .15s;cursor:pointer}
+.card:hover{transform:translateY(-2px);box-shadow:0 4px 8px rgba(0,0,0,.06),0 12px 32px rgba(0,0,0,.08)}
+.card:active{transform:translateY(0)}
 
-/* Nav */
-.sb-nav{padding:8px 12px;display:flex;flex-direction:column;gap:2px}
-.nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;cursor:pointer;transition:background .12s;text-decoration:none;border:none;background:none;width:100%;text-align:left}
-.nav-item:hover{background:rgba(255,255,255,.06)}
-.nav-item.active{background:rgba(255,255,255,.1)}
-.nav-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.ic1{background:#dbeafe20;color:#93c5fd}
-.ic2{background:#fef9c320;color:#fcd34d}
-.ic3{background:#fce7f320;color:#f9a8d4}
-.ic4{background:#dcfce720;color:#6ee7b7}
-.ic0{background:rgba(255,255,255,.07);color:rgba(255,255,255,.5)}
-.nav-info{flex:1;min-width:0}
-.nav-info strong{font-size:12px;color:#fff;display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.nav-info span{font-size:11px;color:rgba(255,255,255,.35);display:block;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.nav-dots{display:flex;gap:3px;align-items:center}
-.ndot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.12);transition:background .2s}
-.ndot.done{background:var(--verde)}
+.card-icon{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center}
+.card-icon.green{background:#e8f8f0}
+.card-icon.blue{background:#e8f0fb}
+.card-icon.amber{background:#fef3e2}
+.card-icon.rose{background:#fde8ea}
 
-/* Próximo passo */
-.next-card{margin:8px 12px 0;border:1px solid rgba(0,183,79,.25);background:rgba(0,183,79,.07);border-radius:10px;padding:12px 14px}
-.next-card-header{display:flex;align-items:center;gap:6px;margin-bottom:6px}
-.next-card-header span{font-size:10px;font-weight:700;color:var(--verde);text-transform:uppercase;letter-spacing:.06em}
-.next-card-title{font-size:12px;color:#fff;font-weight:600;line-height:1.4;margin-bottom:2px}
-.next-card-sub{font-size:11px;color:rgba(255,255,255,.4)}
+.card-badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600}
+.badge-green{background:#e8f8f0;color:var(--verde-dark)}
+.badge-blue{background:#e8f0fb;color:#2563eb}
+.badge-amber{background:#fef3e2;color:#92400e}
+.badge-rose{background:#fde8ea;color:#9f1239}
+.badge-gray{background:#f3f4f6;color:#374151}
 
-/* Reset */
-.sb-reset{display:flex;align-items:center;justify-content:center;gap:6px;margin:auto 12px 16px;padding:8px;border-radius:8px;cursor:pointer;border:none;background:none;color:rgba(255,255,255,.2);font-size:11px;font-family:inherit;transition:all .15s;width:calc(100% - 24px);margin-top:16px}
-.sb-reset:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.5)}
+.card h3{font-size:16px;font-weight:700;color:var(--azul)}
+.card p{font-size:13px;color:var(--text-soft);line-height:1.55}
+.card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:4px}
+.card-link{font-size:13px;font-weight:600;color:var(--verde);display:flex;align-items:center;gap:5px}
 
-/* ══ MAIN ══ */
-.main{overflow-y:auto;min-height:100vh}
-.main-inner{padding:32px 36px;width:100%}
-.section{display:none}
-.section.active{display:block}
+/* ── FOOTER ── */
+.footer{text-align:center;font-size:12px;color:var(--cinza);margin-top:56px;padding-top:24px;border-top:1px solid var(--border)}
 
-/* Header de seção */
-.sec-header{margin-bottom:24px}
-.sec-header h2{font-size:20px;font-weight:800;margin-bottom:3px;letter-spacing:-.01em}
-.sec-header p{font-size:13px;color:var(--cinza)}
-
-/* ── OVERVIEW ── */
-.ov-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;width:100%}
-.ov-card{background:var(--white);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow);border:1px solid var(--border)}
-.ov-card-title{font-size:11px;font-weight:700;color:var(--cinza);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;display:flex;align-items:center;gap:6px}
-.ov-week-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
-.ov-week-row:last-child{margin-bottom:0}
-.ov-badge{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0}
-.ov-b1{background:#dbeafe;color:#1d4ed8}.ov-b2{background:#fef9c3;color:#a16207}
-.ov-b3{background:#fce7f3;color:#9d174d}.ov-b4{background:#dcfce7;color:#15803d}
-.ov-name{flex:1;font-size:12px;font-weight:500;color:var(--azul)}
-.ov-track{width:72px;background:var(--snow);border-radius:99px;height:5px;overflow:hidden}
-.ov-fill{height:100%;border-radius:99px;transition:width .5s ease}
-.ov-n{font-size:11px;color:var(--cinza);width:24px;text-align:right;font-weight:600}
-
-.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.stat-box{border-radius:9px;padding:12px 14px}
-.stat-box .sv{font-size:20px;font-weight:800;line-height:1;margin-bottom:2px}
-.stat-box .sl{font-size:11px;font-weight:500;opacity:.65}
-
-.note-card{background:var(--white);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:16px}
-.note-card-title{font-size:11px;font-weight:700;color:var(--cinza);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-
-/* Conquistas */
-.cq-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
-.cq-item{background:var(--white);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);border:1px solid var(--border);display:flex;align-items:center;gap:12px;transition:box-shadow .15s}
-.cq-item.unlocked{border-color:#d1fae5}
-.cq-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.cq-icon-locked{background:var(--snow);color:#c0c0d0}
-.cq-icon-done{background:#dcfce7;color:#15803d}
-.cq-text strong{font-size:12px;font-weight:700;display:block;color:var(--azul)}
-.cq-text span{font-size:11px;color:var(--cinza)}
-.cq-item.locked .cq-text strong,.cq-item.locked .cq-text span{color:#c0c0d0}
-
-/* ── SEMANA ── */
-.week-bar-card{background:var(--white);border-radius:var(--radius);padding:14px 18px;margin-bottom:16px;box-shadow:var(--shadow);border:1px solid var(--border);display:flex;align-items:center;gap:14px}
-.week-bar-track{flex:1;background:var(--snow);border-radius:99px;height:7px;overflow:hidden}
-.week-bar-fill{height:100%;border-radius:99px;transition:width .5s ease}
-.w1f{background:#3b82f6}.w2f{background:#eab308}.w3f{background:#ec4899}.w4f{background:var(--verde)}
-.week-bar-info{display:flex;flex-direction:column;align-items:flex-end;flex-shrink:0}
-.week-bar-info strong{font-size:13px;font-weight:800;color:var(--azul);line-height:1}
-.week-bar-info span{font-size:10px;color:var(--cinza);margin-top:1px}
-
-/* Dia card */
-.dia-card{background:var(--white);border-radius:var(--radius);margin-bottom:10px;box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden;transition:box-shadow .15s,border-color .15s}
-.dia-card.current-day{border-color:var(--verde)}
-.dia-card.is-done{opacity:.65}
-.dia-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.08),0 8px 24px rgba(0,0,0,.06)}
-
-.dia-row{display:flex;align-items:flex-start;gap:14px;padding:16px 18px;cursor:pointer}
-.check-wrap{padding-top:1px}
-.check-btn{width:22px;height:22px;border-radius:6px;border:1.5px solid #d0d0e4;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;background:var(--white);transition:all .15s}
-.check-btn:hover{border-color:var(--verde)}
-.dia-card.is-done .check-btn{background:var(--verde);border-color:var(--verde)}
-.check-inner{display:none}
-.dia-card.is-done .check-inner{display:block}
-
-.dia-body{flex:1;min-width:0}
-.dia-meta-row{display:flex;align-items:center;gap:6px;margin-bottom:4px;flex-wrap:wrap}
-.dia-num{font-size:10px;font-weight:700;color:var(--cinza);text-transform:uppercase;letter-spacing:.05em}
-.tag{font-size:10px;font-weight:700;border-radius:6px;padding:2px 7px;display:inline-flex;align-items:center;gap:4px;line-height:1.4}
-.tag-entrega{background:#fef9c3;color:#a16207;border:1px solid #fde68a}
-.tag-agora{background:var(--verde-light);color:var(--verde-dark);border:1px solid #a7f3d0}
-.dia-titulo{font-size:14px;font-weight:700;margin-bottom:3px;transition:color .15s}
-.dia-card.is-done .dia-titulo{text-decoration:line-through;color:var(--cinza)}
-.dia-desc{font-size:12px;color:var(--cinza);line-height:1.5}
-
-.expand-icon{margin-top:3px;color:#c0c0d0;transition:transform .2s;flex-shrink:0}
-.dia-card.is-open .expand-icon{transform:rotate(180deg)}
-
-/* Painel expandido */
-.dia-panel{display:none;border-top:1px solid var(--border)}
-.dia-card.is-open .dia-panel{display:block}
-.dia-panel-inner{padding:16px 18px;display:flex;flex-direction:column;gap:14px}
-
-.panel-section-title{font-size:10px;font-weight:700;color:var(--cinza);text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:center;gap:6px;margin-bottom:8px}
-.dica-box{background:#f8f9ff;border:1px solid var(--border);border-radius:9px;padding:12px 14px;font-size:12px;color:#374151;line-height:1.6}
-
-textarea.nota{width:100%;border:1.5px solid var(--border);border-radius:9px;padding:11px 14px;font-size:13px;color:var(--azul);resize:vertical;min-height:88px;font-family:inherit;line-height:1.6;transition:border-color .15s;outline:none;background:#fafbff}
-textarea.nota:focus{border-color:var(--verde);background:var(--white)}
-textarea.nota::placeholder{color:#c4c4d4}
-.saved-msg{font-size:11px;color:var(--verde);height:14px;opacity:0;transition:opacity .3s;display:flex;align-items:center;gap:4px;margin-top:4px}
-.saved-msg.show{opacity:1}
-
-.ref-chips{display:flex;flex-wrap:wrap;gap:6px}
-.ref-chip{font-size:11px;background:#f4f4fb;border:1px solid var(--border);border-radius:6px;padding:4px 10px;color:#4b5563;font-family:'Courier New',monospace;font-size:11px}
-
-/* Tarefa do dia */
-.tarefa-box{border:1.5px solid #fde68a;border-radius:10px;overflow:hidden}
-.tarefa-header{background:#fffbeb;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.tarefa-header-left{display:flex;align-items:center;gap:8px}
-.tarefa-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#92400e}
-.tarefa-check-btn{display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:7px;border:1.5px solid #fcd34d;background:#fff;cursor:pointer;font-size:11px;font-weight:600;color:#92400e;font-family:inherit;transition:all .15s;flex-shrink:0;white-space:nowrap}
-.tarefa-check-btn:hover{background:#fef9c3}
-.tarefa-check-btn.done{background:#dcfce7;border-color:#6ee7b7;color:#15803d}
-.tarefa-body{padding:12px 14px;background:#fff;border-top:1px solid #fde68a}
-.tarefa-text{font-size:13px;color:#374151;line-height:1.65}
-
-/* textareas em geral */
-textarea{font-family:'Plus Jakarta Sans',sans-serif}
-
-@media(max-width:680px){
-  .layout{grid-template-columns:1fr}
-  .sidebar{position:relative;height:auto}
-  .main-inner{padding:16px}
-  .ov-grid,.cq-grid{grid-template-columns:1fr}
-}
 </style>
 </head>
 <body>
-<div class="layout">
+<div class="page">
 
-<!-- ══ SIDEBAR ══ -->
-<aside class="sidebar">
-  <div class="sb-top">
-    <div class="sb-brand">
-      <div class="sb-brand-dot"></div>
-      <span>Real Metais · Estudos</span>
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+        <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+      </svg>
     </div>
+    <div class="header-text">
+      <h1>Central de Estudos</h1>
+      <p>Real Metais — Desenvolvimento técnico júnior</p>
+    </div>
+  </div>
 
-    <div class="ring-wrap">
-      <div class="ring-svg-wrap">
-        <svg class="ring-svg" width="100" height="100" viewBox="0 0 100 100">
-          <circle class="ring-bg" cx="50" cy="50" r="43"/>
-          <circle class="ring-fg" id="ring-fg" cx="50" cy="50" r="43" stroke-dasharray="270" stroke-dashoffset="270"/>
-        </svg>
-        <div class="ring-inner">
-          <div class="ring-pct" id="sb-pct">0%</div>
-          <div class="ring-sub" id="sb-sub">0 / 20 dias</div>
+  <!-- Progress Banner -->
+  <div class="progress-banner">
+    <div class="pb-ring">
+      <svg viewBox="0 0 72 72">
+        <circle cx="36" cy="36" r="30" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="7"/>
+        <circle id="ringCircle" cx="36" cy="36" r="30" fill="none" stroke="#00B74F" stroke-width="7"
+          stroke-dasharray="188.5" stroke-dashoffset="188.5"
+          stroke-linecap="round" transform="rotate(-90 36 36)"/>
+      </svg>
+      <div class="pb-ring-num" id="ringPct">0%</div>
+    </div>
+    <div class="pb-info">
+      <h2 id="bannerTitle">Comece sua jornada</h2>
+      <p id="bannerSub">Acesse o Plano de Estudos para acompanhar seu progresso dia a dia</p>
+      <div class="pb-bar-wrap">
+        <div class="pb-bar-label">
+          <span id="barDays">0 de 20 dias concluídos</span>
+          <span id="barWeek">Semana 1 de 4</span>
+        </div>
+        <div class="pb-bar"><div class="pb-bar-fill" id="barFill" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cards Grid -->
+  <div class="grid">
+
+    <!-- Plano de Estudos -->
+    <a href="progresso-estudos.html">
+      <div class="card">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between">
+          <div class="card-icon green">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00B74F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+            </svg>
+          </div>
+          <span class="card-badge badge-green">Principal</span>
+        </div>
+        <div>
+          <h3>Plano de Estudos</h3>
+          <p>Acompanhe os 20 dias de trilha de aprendizado — anotações por dia, tarefas práticas e progresso geral.</p>
+        </div>
+        <div class="card-footer">
+          <span style="font-size:12px;color:var(--text-soft)" id="cardPlanoBadge">4 semanas · 20 dias</span>
+          <span class="card-link">
+            Abrir
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
         </div>
       </div>
-      <div class="ring-label" id="sb-label">Nenhum dia concluído</div>
-    </div>
+    </a>
+
+    <!-- Glossário -->
+    <a href="glossario.html">
+      <div class="card">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between">
+          <div class="card-icon blue">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
+            </svg>
+          </div>
+          <span class="card-badge badge-blue">Referência</span>
+        </div>
+        <div>
+          <h3>Glossário Técnico</h3>
+          <p>Dicionário de termos do projeto — Python, FastAPI, React, banco de dados, autenticação e mais.</p>
+        </div>
+        <div class="card-footer">
+          <span style="font-size:12px;color:var(--text-soft)">35+ termos · 7 categorias</span>
+          <span class="card-link">
+            Abrir
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Diário de Erros -->
+    <a href="diario-erros.html">
+      <div class="card">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between">
+          <div class="card-icon amber">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+              <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+          </div>
+          <span class="card-badge badge-amber">Aprendizado</span>
+        </div>
+        <div>
+          <h3>Diário de Erros</h3>
+          <p>Registre erros que encontrou, o que causou e como resolveu. Cada erro documentado vale mais que horas de leitura.</p>
+        </div>
+        <div class="card-footer">
+          <span style="font-size:12px;color:var(--text-soft)" id="cardErrosBadge">Nenhum erro registrado</span>
+          <span class="card-link">
+            Abrir
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Checklist PR -->
+    <a href="checklist-pr.html">
+      <div class="card">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between">
+          <div class="card-icon rose">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e11d48" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+            </svg>
+          </div>
+          <span class="card-badge badge-rose">Processo</span>
+        </div>
+        <div>
+          <h3>Checklist de PR</h3>
+          <p>Lista de verificação antes de abrir um Pull Request — código, banco, mensagem de commit e boas práticas.</p>
+        </div>
+        <div class="card-footer">
+          <span style="font-size:12px;color:var(--text-soft)">27 itens · 5 seções</span>
+          <span class="card-link">
+            Abrir
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
+        </div>
+      </div>
+    </a>
+
+  </div><!-- /grid -->
+
+  <div class="footer">
+    Real Metais · Sistema interno de capacitação técnica
   </div>
 
-  <div class="sb-divider"></div>
-
-  <nav class="sb-nav">
-    <button class="nav-item active" onclick="mostrarSecao('overview',this)">
-      <div class="nav-icon ic0">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
-        </svg>
-      </div>
-      <div class="nav-info"><strong>Visão Geral</strong><span>Progresso completo</span></div>
-    </button>
-
-    <button class="nav-item" onclick="mostrarSecao('s0',this)" id="nav-s0">
-      <div class="nav-icon ic1">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
-        </svg>
-      </div>
-      <div class="nav-info"><strong>Semana 1</strong><span>Fundamentos Python</span></div>
-      <div class="nav-dots" id="ndots-0"></div>
-    </button>
-
-    <button class="nav-item" onclick="mostrarSecao('s1',this)" id="nav-s1">
-      <div class="nav-icon ic2">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/>
-        </svg>
-      </div>
-      <div class="nav-info"><strong>Semana 2</strong><span>Web e Backend</span></div>
-      <div class="nav-dots" id="ndots-1"></div>
-    </button>
-
-    <button class="nav-item" onclick="mostrarSecao('s2',this)" id="nav-s2">
-      <div class="nav-icon ic3">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-        </svg>
-      </div>
-      <div class="nav-info"><strong>Semana 3</strong><span>Frontend React</span></div>
-      <div class="nav-dots" id="ndots-2"></div>
-    </button>
-
-    <button class="nav-item" onclick="mostrarSecao('s3',this)" id="nav-s3">
-      <div class="nav-icon ic4">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
-        </svg>
-      </div>
-      <div class="nav-info"><strong>Semana 4</strong><span>Sistema completo</span></div>
-      <div class="nav-dots" id="ndots-3"></div>
-    </button>
-  </nav>
-
-  <div class="sb-divider" style="margin-top:8px"></div>
-
-  <div class="next-card" id="next-card" style="display:none">
-    <div class="next-card-header">
-      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--verde)">
-        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-      </svg>
-      <span>Próximo passo</span>
-    </div>
-    <div class="next-card-title" id="next-title"></div>
-    <div class="next-card-sub" id="next-sub"></div>
-  </div>
-
-  <div style="flex:1"></div>
-
-  <button class="sb-reset" onclick="resetar()">
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/>
-    </svg>
-    Reiniciar progresso
-  </button>
-</aside>
-
-<!-- ══ MAIN ══ -->
-<main class="main">
-<div class="main-inner">
-
-  <!-- OVERVIEW -->
-  <div class="section active" id="sec-overview">
-    <div class="sec-header">
-      <h2>Visão Geral</h2>
-      <p>Acompanhe seu progresso pelas 4 semanas do plano</p>
-    </div>
-    <div class="ov-grid" id="ov-weeks"></div>
-    <div class="note-card">
-      <div class="note-card-title">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-        Anotações gerais
-      </div>
-      <textarea class="nota" id="nota-global" placeholder="Dúvidas para perguntar ao time, observações gerais, coisas para revisar..."></textarea>
-      <div class="saved-msg" id="saved-global">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        Salvo
-      </div>
-    </div>
-    <div class="cq-grid" id="cq-grid"></div>
-  </div>
-
-  <!-- SEMANAS (geradas via JS) -->
-  <div class="section" id="sec-s0"></div>
-  <div class="section" id="sec-s1"></div>
-  <div class="section" id="sec-s2"></div>
-  <div class="section" id="sec-s3"></div>
-
-</div>
-</main>
-</div>
+</div><!-- /page -->
 
 <script>
-/* ── Dados ── */
-const SEMANAS = [
-  {
-    titulo:"Semana 1 — O que é programação",
-    subtitulo:"Fundamentos da linguagem Python",
-    meta:"Escrever e rodar scripts Python simples",
-    barCls:"w1f", badgeCls:"ov-b1", corHex:"#3b82f6",
-    dias:[
-      {
-        titulo:"O que é programação e o ambiente",
-        desc:"Instalar Python e VS Code. Rodar o primeiro script no terminal.",
-        dica:"Não precisa entender o código do projeto ainda — só observe que o arquivo backend/models/usuario.py usa os mesmos tipos que você vai aprender hoje.",
-        refs:["backend/models/usuario.py"],
-        entrega:false,
-        tarefa:"Crie um arquivo chamado ola.py. Dentro dele, escreva: print(\"Meu nome é [seu nome]\"). Abra o terminal, navegue até a pasta onde salvou o arquivo e rode: python ola.py. Veja seu nome aparecer no terminal."
-      },
-      {
-        titulo:"Variáveis, Tipos e Operações",
-        desc:"str, int, bool, float — os tipos básicos da linguagem.",
-        dica:"Abra backend/models/usuario.py e tente identificar quais campos são str, quais são bool e qual é a chave primária (id).",
-        refs:["backend/models/usuario.py"],
-        entrega:false,
-        tarefa:"Crie variaveis.py com as seguintes variáveis: nome (str), idade (int), salario (float) e ativo (bool). Use valores fictícios de um colega. Imprima uma frase com todos eles usando f-string: print(f\"{nome} tem {idade} anos, ganha R${salario} e está ativo: {ativo}\")."
-      },
-      {
-        titulo:"Condições e Decisões",
-        desc:"if, elif, else — o programa toma decisões com base em valores.",
-        dica:"Procure por 'if' dentro de backend/middlewares/auth_middleware.py — o backend usa exatamente essa lógica para decidir se o acesso é permitido.",
-        refs:["backend/middlewares/auth_middleware.py"],
-        entrega:false,
-        tarefa:"Crie acesso.py com uma variável nivel_acesso = 5. Use if/elif/else para imprimir: 'Administrador' se for 10, 'Gestor' se for entre 5 e 9, ou 'Operador' para qualquer outro valor. Teste mudando o valor da variável para 10, 5 e 1."
-      },
-      {
-        titulo:"Listas, Dicionários e Loops",
-        desc:"Estruturas de dados e como percorrê-las com for.",
-        dica:"O JSON que o backend envia para o frontend é uma lista de dicionários — igual ao que você vai praticar hoje. Veja frontend-react/src/types/auth.ts para comparar.",
-        refs:["frontend-react/src/types/auth.ts"],
-        entrega:false,
-        tarefa:"Crie usuarios.py com uma lista de 3 dicionários, cada um com 'nome', 'setor' e 'ativo'. Use um loop for para percorrer a lista e imprimir apenas os usuários com ativo igual a True, no formato: 'Ana — Qualidade está ativa'."
-      },
-      {
-        titulo:"Funções e Organização do Código",
-        desc:"Blocos reutilizáveis com def e return.",
-        dica:"Entrega: crie uma função descrever_usuario(nome, perfil, ativo) que retorna uma frase descrevendo o usuário. Chame com 3 usuários diferentes e imprima os resultados.",
-        refs:["backend/core/security.py"],
-        entrega:true,
-        tarefa:"Crie funcoes.py com uma função chamada descrever_usuario(nome, perfil, ativo) que retorna uma frase como 'Ana é gestora e está ativa'. Chame a função 3 vezes com valores diferentes e imprima cada resultado. Essa é a entrega da semana."
-      },
-    ]
-  },
-  {
-    titulo:"Semana 2 — Como a Web Funciona",
-    subtitulo:"HTTP, APIs e o backend do projeto",
-    meta:"Entender o que é uma API e ler o backend com compreensão básica",
-    barCls:"w2f", badgeCls:"ov-b2", corHex:"#eab308",
-    dias:[
-      {
-        titulo:"Cliente, Servidor e HTTP",
-        desc:"GET, POST, status codes, JSON — a linguagem que a web usa.",
-        dica:"Com o backend rodando, abra localhost:8000/docs no navegador. Você vai ver o Swagger — a documentação automática da API. Explore os endpoints sem medo.",
-        refs:["backend/main.py"],
-        entrega:false,
-        tarefa:"Com o backend rodando, abra localhost:8000/docs. Encontre o endpoint GET /setores, clique em 'Try it out' e depois em 'Execute'. Copie a resposta JSON nas anotações. Observe o campo 'Response Code' — qual número apareceu? O que ele significa?"
-      },
-      {
-        titulo:"Python: Classes e Models",
-        desc:"Moldes para criar objetos — base de todos os models do projeto.",
-        dica:"Compare a classe simples que você vai criar com backend/models/usuario.py. A estrutura é a mesma — o SQLAlchemy só adiciona a capacidade de salvar no banco.",
-        refs:["backend/models/usuario.py","backend/models/perfil.py"],
-        entrega:false,
-        tarefa:"Crie classes.py com uma classe Perfil que tem os atributos nome e nivel_acesso no __init__. Crie 2 instâncias: uma para 'Admin' com nível 10 e outra para 'Operador' com nível 1. Imprima os atributos de cada uma. Compare sua classe com backend/models/perfil.py — o que é parecido?"
-      },
-      {
-        titulo:"Banco de Dados e SQL Básico",
-        desc:"Tabelas, SELECT, JOIN, WHERE — explorar o banco real do projeto.",
-        dica:"No DBeaver ou psql, rode um SELECT com JOIN entre rm_usuarios e rm_perfis. Veja que os nomes das tabelas têm prefixo rm_ (Real Metais).",
-        refs:["backend/database/migrations/versions/001_initial_schema.py"],
-        entrega:false,
-        tarefa:"No DBeaver (ou psql), conecte ao banco de desenvolvimento e rode: SELECT u.nome, p.nome as perfil FROM rm_usuarios u JOIN rm_perfis p ON p.id = u.perfil_id WHERE u.ativo = true. Anote nas anotações: quantos usuários ativos existem e quais perfis aparecem."
-      },
-      {
-        titulo:"FastAPI na Prática: Lendo um Router",
-        desc:"Decorators de rota, Depends — o padrão que se repete em todo o projeto.",
-        dica:"Para cada endpoint em backend/routers/setores.py: qual método HTTP usa? Qual URL? O que a função faz? Depois encontre esses mesmos endpoints no Swagger.",
-        refs:["backend/routers/setores.py","backend/routers/perfis.py"],
-        entrega:false,
-        tarefa:"Abra backend/routers/setores.py e liste todos os endpoints no formato: [MÉTODO] /caminho — o que faz. Ex: [GET] /setores — lista todos os setores. Depois abra o Swagger e confirme que cada um aparece lá."
-      },
-      {
-        titulo:"Mapear o Fluxo de Login",
-        desc:"Trace em palavras simples o que acontece quando o usuário faz login.",
-        dica:"Entrega: escreva num arquivo de texto o que acontece do clique em Entrar até o usuário ver o dashboard. Não precisa ser técnico — escreva como explicaria para alguém fora da área.",
-        refs:["frontend-react/src/pages/auth/LoginPage.tsx","backend/routers/auth.py"],
-        entrega:true,
-        tarefa:"Escreva num arquivo .txt (ou nas anotações abaixo) o fluxo completo do login em no mínimo 5 passos numerados. Comece com '1. O usuário digita email e senha' e termine com o usuário dentro do sistema. Essa é a entrega da semana."
-      },
-    ]
-  },
-  {
-    titulo:"Semana 3 — Frontend: A Interface",
-    subtitulo:"HTML, JavaScript e React",
-    meta:"Entender componentes React e navegar no frontend do projeto",
-    barCls:"w3f", badgeCls:"ov-b3", corHex:"#ec4899",
-    dias:[
-      {
-        titulo:"HTML e CSS: A Base de Toda Interface",
-        desc:"Tags, classes CSS, Tailwind — estrutura e aparência das páginas.",
-        dica:"Abra frontend-react/src/pages/auth/TrocarSenhaPage.tsx. Procure por <form>, <input>, <button> — são as mesmas tags HTML, só que dentro do React.",
-        refs:["frontend-react/src/pages/auth/TrocarSenhaPage.tsx"],
-        entrega:false,
-        tarefa:"Crie um arquivo formulario.html e dentro dele coloque: um título <h1>, dois <input> (email e senha) e um <button>. Abra no navegador com duplo clique. Depois abra TrocarSenhaPage.tsx e encontre onde esses mesmos elementos aparecem no código React."
-      },
-      {
-        titulo:"JavaScript: A Linguagem do Navegador",
-        desc:"const, let, arrow functions, async/await — JS roda no navegador.",
-        dica:"Abra o console do navegador (F12) e teste fetch() diretamente. Depois olhe frontend-react/src/lib/api.ts — é exatamente isso, organizado.",
-        refs:["frontend-react/src/lib/api.ts"],
-        entrega:false,
-        tarefa:"Com o backend rodando, abra o console do navegador (F12 → Console) e cole: fetch('http://localhost:8000/setores', {credentials:'include'}).then(r=>r.json()).then(d=>console.log(d)). Veja a resposta aparecer. Anote nas anotações o que veio — é o mesmo JSON do Swagger."
-      },
-      {
-        titulo:"React: Componentes e Estado",
-        desc:"useState, re-render, props — como a interface reage a mudanças.",
-        dica:"Liste todos os useState do arquivo TrocarSenhaPage.tsx e descreva para que serve cada um. Por que salvando começa como false e vai para true?",
-        refs:["frontend-react/src/pages/auth/TrocarSenhaPage.tsx"],
-        entrega:false,
-        tarefa:"Abra TrocarSenhaPage.tsx e faça uma lista nas anotações com todos os useState. Para cada um escreva: nome da variável, valor inicial e quando esse valor muda. Exemplo: 'salvando — começa false, vai pra true quando o formulário é enviado'."
-      },
-      {
-        titulo:"React: Navegação e Estado Global",
-        desc:"React Router, rotas protegidas, Zustand — como o projeto gerencia páginas.",
-        dica:"No App.tsx, liste todas as rotas e classifique cada uma: pública, exige login ou somente admin. Depois veja o que useAuthStore guarda sobre o usuário logado.",
-        refs:["frontend-react/src/App.tsx","frontend-react/src/stores/auth.ts"],
-        entrega:false,
-        tarefa:"Abra App.tsx e faça uma tabela simples nas anotações com 3 colunas: URL | Página | Quem acessa. Preencha com todas as rotas que encontrar. Use: 'público', 'logado' ou 'só admin' na coluna Quem acessa."
-      },
-      {
-        titulo:"Explorar o Módulo de Qualidade Completo",
-        desc:"Um módulo real de ponta a ponta — backend e frontend juntos.",
-        dica:"Entrega: quantos endpoints existem em qualidade.py? Quais abas existem no frontend? O que cada aba faz? Navegue no sistema real enquanto lê o código.",
-        refs:["backend/routers/qualidade.py","frontend-react/src/pages/qualidade/"],
-        entrega:true,
-        tarefa:"Abra o módulo Qualidade no sistema. Para cada aba que existe, escreva nas anotações: nome da aba, para que serve e qual endpoint do backend ela usa. Essa é a entrega da semana."
-      },
-    ]
-  },
-  {
-    titulo:"Semana 4 — O Sistema Completo",
-    subtitulo:"Autenticação, Git e visão de sistema",
-    meta:"Ter visão completa do projeto e entender como contribuir",
-    barCls:"w4f", badgeCls:"ov-b4", corHex:"#00B74F",
-    dias:[
-      {
-        titulo:"Autenticação: Do Login ao Token",
-        desc:"JWT, cookies httpOnly, refresh token — como o acesso é protegido.",
-        dica:"Com o F12 aberto, faça login no sistema e observe a aba Application > Cookies. Você vai ver o access_token sendo criado.",
-        refs:["backend/routers/auth.py","backend/core/security.py"],
-        entrega:false,
-        tarefa:"Abra o sistema no navegador com F12 aberto. Faça login. Vá em Application (ou Storage) → Cookies. Anote nas anotações: quais cookies aparecem? Qual é o nome de cada um? Tente fazer logout e veja se os cookies somem."
-      },
-      {
-        titulo:"Banco de Dados: Migrations",
-        desc:"Alembic — como o banco evolui com o projeto sem perder dados.",
-        dica:"Abra 3 migrations em sequência na pasta versions/ e leia o que cada upgrade() faz em palavras simples. Cada arquivo é uma mudança histórica no banco.",
-        refs:["backend/database/migrations/versions/"],
-        entrega:false,
-        tarefa:"Abra os arquivos 001_initial_schema.py, 006_sessao_invalidada_em.py e qualquer outro entre 040 e 060. Para cada um, escreva uma frase descrevendo o que upgrade() faz. Exemplo: '001 — cria as tabelas principais do sistema'."
-      },
-      {
-        titulo:"Git: Controle de Versão",
-        desc:"git log, git status, branches — o histórico de tudo que mudou no projeto.",
-        dica:"No terminal, rode: git log --oneline -10. Cada linha é uma mudança. Leia as mensagens e tente entender o que foi alterado sem ver o código.",
-        refs:[".claude/context/git-workflow.md"],
-        entrega:false,
-        tarefa:"No terminal, dentro da pasta do projeto, rode: git log --oneline -10. Copie os 5 commits mais recentes nas anotações. Para cada um, tente adivinhar o que foi alterado só pela mensagem. Depois rode git show [hash do commit] para ver se acertou."
-      },
-      {
-        titulo:"Como Fazer uma Mudança com Segurança",
-        desc:"branch → editar → commit → PR — o ritual que o time segue.",
-        dica:"Acompanhe (sem fazer sozinho) um desenvolvedor criar uma branch e abrir um PR. O objetivo é entender o ritual e por que cada passo existe.",
-        refs:[".claude/context/git-workflow.md"],
-        entrega:false,
-        tarefa:"Peça para um colega mostrar o processo de criar uma branch e abrir um PR. Enquanto ele faz, anote nas anotações cada comando que ele digita e o que cada um faz. No final, você deve ter pelo menos 5 comandos anotados com explicação."
-      },
-      {
-        titulo:"Leitura do Sistema Completo",
-        desc:"Descrever o sistema em palavras — consolidar o que aprendeu.",
-        dica:"Entrega: escreva um texto descrevendo o sistema como explicaria para alguém de fora da área: o que faz, quem usa, como o login funciona, cite 3 módulos.",
-        refs:["backend/main.py","frontend-react/src/App.tsx"],
-        entrega:true,
-        tarefa:"Escreva um texto de 1 página (pode ser nas anotações ou num arquivo separado) descrevendo o sistema para alguém que nunca programou. Responda: O que o sistema faz? Quem usa? Como o login funciona? Cite 3 módulos e o que cada um faz. Essa é a entrega final do plano."
-      },
-    ]
-  },
-];
+// Lê progresso do localStorage (mesma chave do progresso-estudos.html)
+(function(){
+  const TOTAL = 20
+  let completed = 0
+  try {
+    const raw = localStorage.getItem('rm-est3')
+    if (raw) {
+      const data = JSON.parse(raw)
+      completed = Object.values(data).filter(Boolean).length
+    }
+  } catch(e){}
 
-const CONQUISTAS = [
-  {
-    titulo:"Fundamentos",
-    desc:"Semana 1 concluída",
-    req:5,
-    icon:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`
-  },
-  {
-    titulo:"Backend",
-    desc:"Semana 2 concluída",
-    req:10,
-    icon:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`
-  },
-  {
-    titulo:"Frontend",
-    desc:"Semana 3 concluída",
-    req:15,
-    icon:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`
-  },
-  {
-    titulo:"Plano concluído",
-    desc:"Todas as 4 semanas",
-    req:20,
-    icon:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`
-  },
-];
+  const pct = Math.round((completed / TOTAL) * 100)
 
-/* ── Storage ── */
-const KEY_E="rm-est3",KEY_N="rm-not3",KEY_G="rm-glob3",KEY_T="rm-tar3";
-const loadEst=()=>{try{return JSON.parse(localStorage.getItem(KEY_E))||{}}catch{return{}}};
-const loadNot=()=>{try{return JSON.parse(localStorage.getItem(KEY_N))||{}}catch{return{}}};
-const loadTar=()=>{try{return JSON.parse(localStorage.getItem(KEY_T))||{}}catch{return{}}};
-const saveEst=e=>localStorage.setItem(KEY_E,JSON.stringify(e));
-const saveNot=n=>localStorage.setItem(KEY_N,JSON.stringify(n));
-const saveTar=t=>localStorage.setItem(KEY_T,JSON.stringify(t));
-const dk=(s,d)=>`${s}-${d}`;
+  // Ring
+  const circ = 2 * Math.PI * 30 // 188.5
+  const offset = circ - (circ * pct / 100)
+  const ring = document.getElementById('ringCircle')
+  if (ring) ring.style.strokeDashoffset = offset
 
-/* ── Cálculos ── */
-function calcTotal(){
-  const est=loadEst();let feito=0;
-  SEMANAS.forEach((s,si)=>s.dias.forEach((_,di)=>{if(est[dk(si,di)])feito++}));
-  return{feito,total:20,pct:Math.round(feito/20*100)};
-}
-function proximoDia(){
-  const est=loadEst();
-  for(let si=0;si<SEMANAS.length;si++)
-    for(let di=0;di<SEMANAS[si].dias.length;di++)
-      if(!est[dk(si,di)])return{si,di,dia:SEMANAS[si].dias[di],sem:SEMANAS[si]};
-  return null;
-}
+  document.getElementById('ringPct').textContent = pct + '%'
+  document.getElementById('barFill').style.width = pct + '%'
+  document.getElementById('barDays').textContent = completed + ' de ' + TOTAL + ' dias concluídos'
 
-/* ── Toggle dia ── */
-function toggleDia(si,di){
-  const est=loadEst();est[dk(si,di)]=!est[dk(si,di)];saveEst(est);
-  renderSidebar();renderSemana(si);renderOverview();
-}
-function toggleTarefa(si,di){
-  const tar=loadTar();const k=dk(si,di);tar[k]=!tar[k];saveTar(tar);
-  const btn=document.getElementById(`tbtn-${si}-${di}`);
-  if(!btn)return;
-  if(tar[k]){
-    btn.classList.add("done");
-    btn.innerHTML=iconCheck(11)+" Feita";
+  const week = Math.min(4, Math.floor(completed / 5) + 1)
+  document.getElementById('barWeek').textContent = 'Semana ' + week + ' de 4'
+
+  if (completed === 0) {
+    document.getElementById('bannerTitle').textContent = 'Comece sua jornada'
+    document.getElementById('bannerSub').textContent = 'Acesse o Plano de Estudos para acompanhar seu progresso dia a dia'
+  } else if (completed < TOTAL) {
+    document.getElementById('bannerTitle').textContent = 'Em progresso — continue assim!'
+    document.getElementById('bannerSub').textContent = 'Você já concluiu ' + completed + ' dia' + (completed > 1 ? 's' : '') + '. Cada dia conta.'
   } else {
-    btn.classList.remove("done");
-    btn.innerHTML=iconCheck(11)+" Marcar como feita";
+    document.getElementById('bannerTitle').textContent = 'Trilha concluída!'
+    document.getElementById('bannerSub').textContent = 'Você completou os 20 dias. Agora é hora de colocar em prática.'
   }
-}
-function togglePanel(si,di){
-  const card=document.getElementById(`card-${si}-${di}`);
-  card.classList.toggle("is-open");
-}
 
-/* ── Notas ── */
-const timers={};
-function setupNota(el,key,savedId){
-  const n=loadNot();el.value=n[key]||"";
-  el.addEventListener("input",()=>{
-    clearTimeout(timers[key]);
-    timers[key]=setTimeout(()=>{
-      const nn=loadNot();nn[key]=el.value;saveNot(nn);
-      const s=document.getElementById(savedId);
-      if(s){s.classList.add("show");setTimeout(()=>s.classList.remove("show"),2000)}
-    },500);
-  });
-}
+  // Card badge do plano
+  if (completed > 0) {
+    document.getElementById('cardPlanoBadge').textContent = completed + ' de 20 dias ✓'
+  }
 
-function iconCheck(s){return`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;}
-
-/* ── Renderizações ── */
-function renderSidebar(){
-  const{feito,pct}=calcTotal();
-  const circ=270,offset=circ-(circ*pct/100);
-  document.getElementById("ring-fg").style.strokeDashoffset=offset;
-  document.getElementById("sb-pct").textContent=pct+"%";
-  document.getElementById("sb-sub").textContent=`${feito} / 20 dias`;
-  const labels=["Nenhum dia concluído","Bom começo, continue assim","Na metade do caminho","Quase no final!","Plano concluído!"];
-  document.getElementById("sb-label").textContent=labels[feito===0?0:feito<5?1:feito<10?2:feito<20?3:4];
-
-  const est=loadEst();
-  SEMANAS.forEach((_,si)=>{
-    const el=document.getElementById(`ndots-${si}`);if(!el)return;
-    el.innerHTML=SEMANAS[si].dias.map((_,di)=>`<div class="ndot ${est[dk(si,di)]?"done":""}"></div>`).join("");
-  });
-
-  const prox=proximoDia();
-  const nc=document.getElementById("next-card");
-  if(prox){
-    nc.style.display="block";
-    document.getElementById("next-title").textContent=`Dia ${prox.di+1}: ${prox.dia.titulo}`;
-    document.getElementById("next-sub").textContent=`Semana ${prox.si+1} — ${prox.sem.subtitulo}`;
-  } else nc.style.display="none";
-}
-
-function renderSemana(si){
-  const sem=SEMANAS[si];
-  const est=loadEst();
-  const prox=proximoDia();
-  const feitos=sem.dias.filter((_,di)=>est[dk(si,di)]).length;
-  const pct=Math.round(feitos/5*100);
-
-  let html=`
-    <div class="sec-header">
-      <h2>${sem.titulo}</h2>
-      <p>${sem.meta}</p>
-    </div>
-    <div class="week-bar-card">
-      <div class="week-bar-track"><div class="week-bar-fill ${sem.barCls}" style="width:${pct}%"></div></div>
-      <div class="week-bar-info"><strong>${feitos}/5</strong><span>dias concluídos</span></div>
-    </div>
-  `;
-
-  sem.dias.forEach((dia,di)=>{
-    const feito=!!est[dk(si,di)];
-    const isProx=prox&&prox.si===si&&prox.di===di&&!feito;
-    const notaKey=`n-${si}-${di}`;
-    const savedId=`sv-${si}-${di}`;
-    const refsHtml=dia.refs.map(r=>`<span class="ref-chip">${r}</span>`).join("");
-    const tar=loadTar();const tarefaFeita=!!tar[dk(si,di)];
-
-    html+=`
-      <div class="dia-card ${feito?"is-done":""} ${isProx?"current-day":""}" id="card-${si}-${di}">
-        <div class="dia-row">
-          <div class="check-wrap">
-            <div class="check-btn" onclick="event.stopPropagation();toggleDia(${si},${di})">
-              <div class="check-inner">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-              </div>
-            </div>
-          </div>
-          <div class="dia-body" onclick="togglePanel(${si},${di})">
-            <div class="dia-meta-row">
-              <span class="dia-num">Dia ${di+1}</span>
-              ${dia.entrega?`<span class="tag tag-entrega"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Entrega</span>`:""}
-              ${isProx?`<span class="tag tag-agora"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Estudar agora</span>`:""}
-            </div>
-            <div class="dia-titulo">${dia.titulo}</div>
-            <div class="dia-desc">${dia.desc}</div>
-          </div>
-          <div class="expand-icon" onclick="togglePanel(${si},${di})">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-          </div>
-        </div>
-        <div class="dia-panel">
-          <div class="dia-panel-inner">
-            <div>
-              <div class="panel-section-title">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                Dica do dia
-              </div>
-              <div class="dica-box">${dia.dica}</div>
-            </div>
-            ${dia.tarefa?`
-            <div>
-              <div class="tarefa-box">
-                <div class="tarefa-header">
-                  <div class="tarefa-header-left">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#92400e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-                    <span class="tarefa-label">Tarefa do dia</span>
-                  </div>
-                  <button class="tarefa-check-btn ${tarefaFeita?"done":""}" id="tbtn-${si}-${di}" onclick="toggleTarefa(${si},${di})">
-                    ${iconCheck(11)} ${tarefaFeita?"Feita":"Marcar como feita"}
-                  </button>
-                </div>
-                <div class="tarefa-body">
-                  <div class="tarefa-text">${dia.tarefa}</div>
-                </div>
-              </div>
-            </div>`:""}
-            <div>
-              <div class="panel-section-title">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                Minhas anotações
-              </div>
-              <textarea class="nota" id="${notaKey}" placeholder="Escreva dúvidas, o que aprendeu, o que achou difícil..."></textarea>
-              <div class="saved-msg" id="${savedId}">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                Salvo
-              </div>
-            </div>
-            ${dia.refs.length?`
-            <div>
-              <div class="panel-section-title">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
-                Arquivos para explorar
-              </div>
-              <div class="ref-chips">${refsHtml}</div>
-            </div>`:""}
-          </div>
-        </div>
-      </div>
-    `;
-  });
-
-  document.getElementById(`sec-s${si}`).innerHTML=html;
-  sem.dias.forEach((_,di)=>{
-    const el=document.getElementById(`n-${si}-${di}`);
-    if(el)setupNota(el,`n-${si}-${di}`,`sv-${si}-${di}`);
-  });
-}
-
-function renderOverview(){
-  const{feito,pct}=calcTotal();
-  const est=loadEst();
-
-  // Cards semanas + stats
-  const semHtml=SEMANAS.map((sem,si)=>{
-    const f=sem.dias.filter((_,di)=>est[dk(si,di)]).length;
-    const p=Math.round(f/5*100);
-    return`<div class="ov-week-row">
-      <div class="ov-badge ${sem.badgeCls}">${si+1}</div>
-      <div class="ov-name">Semana ${si+1}</div>
-      <div class="ov-track"><div class="ov-fill" style="width:${p}%;background:${sem.corHex}"></div></div>
-      <div class="ov-n">${f}/5</div>
-    </div>`;
-  }).join("");
-
-  const statsHtml=[
-    {cor:"#dbeafe",tc:"#1d4ed8",v:feito,l:"Dias concluídos",icon:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`},
-    {cor:"#fef9c3",tc:"#a16207",v:20-feito,l:"Dias restantes",icon:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`},
-    {cor:"#ede9fe",tc:"#7c3aed",v:Math.floor(feito/5),l:"Semanas completas",icon:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`},
-    {cor:"#dcfce7",tc:"#15803d",v:pct+"%",l:"Progresso total",icon:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`},
-  ].map(s=>`
-    <div class="stat-box" style="background:${s.cor};border:1px solid ${s.cor}">
-      <div style="color:${s.tc};margin-bottom:6px">${s.icon}</div>
-      <div class="sv" style="color:${s.tc}">${s.v}</div>
-      <div class="sl" style="color:${s.tc}">${s.l}</div>
-    </div>
-  `).join("");
-
-  document.getElementById("ov-weeks").innerHTML=`
-    <div class="ov-card">
-      <div class="ov-card-title">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-        Progresso por semana
-      </div>
-      ${semHtml}
-    </div>
-    <div class="ov-card">
-      <div class="ov-card-title">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-        Resumo
-      </div>
-      <div class="stat-grid">${statsHtml}</div>
-    </div>
-  `;
-
-  // Conquistas
-  document.getElementById("cq-grid").innerHTML=CONQUISTAS.map(c=>{
-    const done=feito>=c.req;
-    return`<div class="cq-item ${done?"unlocked":"locked"}">
-      <div class="cq-icon ${done?"cq-icon-done":"cq-icon-locked"}">${c.icon}</div>
-      <div class="cq-text"><strong>${c.titulo}</strong><span>${c.desc}</span></div>
-    </div>`;
-  }).join("");
-
-  // Nota global
-  const ng=document.getElementById("nota-global");
-  if(!ng._rdy){ng._rdy=true;ng.value=localStorage.getItem(KEY_G)||"";ng.addEventListener("input",()=>{clearTimeout(timers.g);timers.g=setTimeout(()=>{localStorage.setItem(KEY_G,ng.value);const s=document.getElementById("saved-global");s.classList.add("show");setTimeout(()=>s.classList.remove("show"),2000);},500);});}
-}
-
-function mostrarSecao(id,el){
-  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
-  document.getElementById("sec-"+id).classList.add("active");
-  document.querySelectorAll(".nav-item").forEach(n=>n.classList.remove("active"));
-  if(el)el.classList.add("active");
-  if(id==="overview")renderOverview();
-}
-
-function resetar(){
-  if(!confirm("Reiniciar todo o progresso?\nAs anotações serão mantidas."))return;
-  localStorage.removeItem(KEY_E);
-  localStorage.removeItem(KEY_T);
-  renderSidebar();SEMANAS.forEach((_,si)=>renderSemana(si));renderOverview();
-}
-
-/* ── Init ── */
-renderSidebar();
-SEMANAS.forEach((_,si)=>renderSemana(si));
-renderOverview();
+  // Card badge do diário de erros
+  try {
+    const erros = JSON.parse(localStorage.getItem('rm-erros-v1') || '[]')
+    const n = erros.length
+    const badge = document.getElementById('cardErrosBadge')
+    if (n === 0) badge.textContent = 'Nenhum erro registrado'
+    else if (n === 1) badge.textContent = '1 erro registrado'
+    else badge.textContent = n + ' erros registrados'
+  } catch(e){}
+})()
 </script>
 </body>
 </html>
