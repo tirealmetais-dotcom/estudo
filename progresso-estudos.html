@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Plano de Estudos — Real Metais</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --verde:#00B74F;--verde-light:#e8f8f0;--verde-dark:#006B2E;
+  --azul:#112437;--azul2:#1a3350;
+  --cinza:#9696A0;--snow:#EAEAF4;--white:#fff;
+  --border:#e8e8f2;--text-soft:#6b7280;
+  --radius:12px;--shadow:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);
+  --amber-bg:#fef9e7;--amber-bd:#fde68a;--amber-txt:#92400e;
+}
+body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:var(--snow);color:var(--azul);display:flex;min-height:100vh;font-size:14px}
+svg{display:block;flex-shrink:0}
+a{text-decoration:none;color:inherit}
+textarea,input,button{font-family:inherit}
+
+/* ── SIDEBAR ── */
+.sb{width:280px;min-width:280px;background:var(--azul);min-height:100vh;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;overflow-y:auto}
+.sb::-webkit-scrollbar{width:4px}
+.sb::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:4px}
+.sb-back{display:flex;align-items:center;gap:7px;font-size:11px;color:rgba(255,255,255,.35);padding:16px 20px 0;transition:color .15s}
+.sb-back:hover{color:rgba(255,255,255,.7)}
+.sb-head{padding:14px 20px 0;display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.sb-logo{width:34px;height:34px;background:var(--verde);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sb-titles h2{font-size:13px;font-weight:700;color:#fff}
+.sb-titles p{font-size:11px;color:rgba(255,255,255,.4);margin-top:1px}
+.sb-ring-wrap{display:flex;flex-direction:column;align-items:center;padding:4px 20px 20px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:20px}
+.sb-ring{position:relative;width:88px;height:88px;margin-bottom:10px}
+.sb-ring svg{width:88px;height:88px}
+.sb-ring-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.sb-ring-num b{font-size:20px;font-weight:800;color:#fff;line-height:1}
+.sb-ring-num span{font-size:9px;color:rgba(255,255,255,.4);margin-top:2px}
+.sb-ring-lbl{font-size:12px;font-weight:700;color:#fff;margin-bottom:2px}
+.sb-ring-sub{font-size:10px;color:rgba(255,255,255,.4);text-align:center;line-height:1.45}
+.sb-nav{padding:0 20px;margin-bottom:16px;flex:1}
+.sb-nav-title{font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:12px}
+.sb-wk{margin-bottom:14px}
+.sb-wk-lbl{font-size:9px;color:rgba(255,255,255,.25);font-weight:600;margin-bottom:7px}
+.sb-dots{display:flex;gap:5px}
+.sb-dot{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;cursor:pointer;border:1.5px solid transparent;transition:transform .12s}
+.sb-dot:hover{transform:scale(1.1)}
+.sb-dot.done{background:var(--verde);color:#fff;border-color:var(--verde)}
+.sb-dot.cur{background:rgba(0,183,79,.15);color:var(--verde);border-color:rgba(0,183,79,.5)}
+.sb-dot.pend{background:rgba(255,255,255,.05);color:rgba(255,255,255,.25);border-color:rgba(255,255,255,.05)}
+.sb-next{margin:0 14px 16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:14px}
+.sb-next-lbl{font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.sb-next-title{font-size:12px;font-weight:700;color:#fff;margin-bottom:3px}
+.sb-next-sub{font-size:11px;color:rgba(255,255,255,.4);line-height:1.45}
+.sb-next-btn{margin-top:10px;width:100%;background:var(--verde);color:#fff;border:none;border-radius:7px;padding:7px 12px;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:background .15s}
+.sb-next-btn:hover{background:#00a046}
+
+/* ── MAIN ── */
+.main{flex:1;min-width:0;padding:36px 36px 80px;overflow-x:hidden}
+.main-hdr{margin-bottom:28px}
+.main-hdr h1{font-size:22px;font-weight:800;color:var(--azul);letter-spacing:-.01em;margin-bottom:3px}
+.main-hdr p{font-size:13px;color:var(--text-soft)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.stat{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.stat-ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.ic-g{background:var(--verde-light)}.ic-b{background:#e8f0fb}.ic-a{background:#fef9c3}.ic-p{background:#f3eeff}
+.stat-n{font-size:24px;font-weight:800;color:var(--azul);line-height:1}
+.stat-l{font-size:11px;color:var(--text-soft);margin-top:3px}
+.sec-hdr{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.sec-hdr h3{font-size:14px;font-weight:700;color:var(--azul);white-space:nowrap}
+.sec-line{flex:1;height:1px;background:var(--border)}
+.conqs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.conq{display:flex;align-items:center;gap:8px;background:var(--white);border:1.5px solid var(--border);border-radius:9px;padding:7px 13px;font-size:12px;font-weight:600;color:var(--cinza);box-shadow:var(--shadow);opacity:.35;transition:all .2s}
+.conq.on{opacity:1;color:var(--azul);border-color:var(--verde);background:var(--verde-light)}
+.conq-ic{width:26px;height:26px;border-radius:7px;background:rgba(0,0,0,.04);display:flex;align-items:center;justify-content:center}
+.conq.on .conq-ic{background:var(--verde);color:#fff}
+.glob-wrap{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);margin-bottom:32px}
+.glob-wrap textarea{width:100%;border:none;outline:none;font-size:13px;color:var(--azul);line-height:1.6;resize:vertical;min-height:72px;background:transparent}
+.glob-wrap textarea::placeholder{color:var(--cinza)}
+.glob-saved{font-size:11px;color:var(--verde);margin-top:6px;opacity:0;transition:opacity .3s;height:14px}
+.glob-saved.on{opacity:1}
+.wk-sec{margin-bottom:36px}
+.wk-hdr{display:flex;align-items:center;gap:14px;background:var(--azul);border-radius:var(--radius);padding:16px 20px;margin-bottom:16px}
+.wk-ico{width:38px;height:38px;border-radius:9px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.wk-info{flex:1}
+.wk-info h3{font-size:15px;font-weight:700;color:#fff}
+.wk-info p{font-size:11px;color:rgba(255,255,255,.45);margin-top:2px}
+.wk-badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.65)}
+.wk-badge.done{background:var(--verde);color:#fff}
+.day-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:10px;overflow:hidden}
+.day-card:last-child{margin-bottom:0}
+.day-hdr{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;transition:background .1s}
+.day-hdr:hover{background:#fafbff}
+.day-card.done .day-hdr{background:#f9fffe}
+.day-num{width:34px;height:34px;border-radius:8px;background:var(--snow);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--cinza);flex-shrink:0;transition:all .15s}
+.day-card.done .day-num{background:var(--verde);color:#fff}
+.day-titles{flex:1}
+.day-titles h4{font-size:13px;font-weight:700;color:var(--azul)}
+.day-titles p{font-size:11px;color:var(--text-soft);margin-top:1px}
+.day-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:99px;background:#f3f4f6;color:var(--cinza);flex-shrink:0}
+.day-card.done .day-badge{background:var(--verde-light);color:var(--verde-dark)}
+.day-chev{color:#c8c8d8;transition:transform .2s;flex-shrink:0}
+.day-card.open .day-chev{transform:rotate(180deg)}
+.day-body{display:none;border-top:1px solid var(--border);padding:0 18px 18px;animation:sd .16s ease}
+.day-card.open .day-body{display:block}
+@keyframes sd{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.dica{background:#f8f9fa;border:1px solid var(--border);border-left:3px solid #c8c8d8;border-radius:8px;padding:13px 15px;margin-top:16px;display:flex;gap:11px}
+.dica-ic{flex-shrink:0;color:var(--cinza);margin-top:1px}
+.dica-lbl{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cinza);margin-bottom:4px}
+.dica-txt{font-size:13px;color:var(--azul);line-height:1.65}
+.dica-txt code{font-family:'Courier New',monospace;background:#eef0f4;border:1px solid #dddde8;border-radius:4px;padding:1px 5px;font-size:11px;color:#374151}
+.tarefa{background:var(--amber-bg);border:1px solid var(--amber-bd);border-radius:8px;padding:13px 15px;margin-top:10px}
+.tarefa-lbl{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--amber-txt);display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.tarefa-txt{font-size:13px;color:#78350f;line-height:1.65;margin-bottom:11px}
+.tarefa-txt code{font-family:'Courier New',monospace;background:rgba(120,53,15,.1);border-radius:4px;padding:1px 5px;font-size:11px;color:#78350f}
+.btn-conc{display:inline-flex;align-items:center;gap:6px;background:var(--amber-txt);color:#fff;border:none;border-radius:7px;padding:7px 13px;font-size:11px;font-weight:700;cursor:pointer;transition:background .15s}
+.btn-conc:hover:not(.done){background:#7c3100}
+.btn-conc.done{background:var(--verde);cursor:default;opacity:.75}
+.refs{display:flex;gap:6px;flex-wrap:wrap;margin-top:11px}
+.ref{display:inline-flex;align-items:center;gap:5px;background:#f3f4f6;border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11px;font-family:'Courier New',monospace;color:var(--text-soft)}
+.notes-wrap{margin-top:11px}
+.notes-lbl{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cinza);display:flex;align-items:center;gap:5px;margin-bottom:6px}
+.notes-ta{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 11px;font-size:13px;color:var(--azul);line-height:1.6;resize:vertical;min-height:68px;outline:none;background:var(--white);transition:border-color .15s}
+.notes-ta:focus{border-color:var(--verde)}
+.notes-ta::placeholder{color:var(--cinza)}
+.notes-saved{font-size:10px;color:var(--verde);margin-top:4px;opacity:0;transition:opacity .3s;height:12px}
+.notes-saved.on{opacity:1}
+.btn-day-done{display:flex;align-items:center;gap:6px;border:none;border-radius:8px;padding:8px 16px;font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;margin-top:12px}
+.btn-day-done.pending{background:var(--azul);color:#fff}
+.btn-day-done.pending:hover{background:var(--azul2)}
+.btn-day-done.done{background:#f3f4f6;color:var(--cinza);cursor:default}
+@media(max-width:960px){.sb{width:230px;min-width:230px}.stats{grid-template-columns:repeat(2,1fr)}.main{padding:24px 24px 60px}}
+@media(max-width:660px){body{flex-direction:column}.sb{width:100%;min-width:unset;height:auto;position:static}.sb-ring-wrap,.sb-nav,.sb-next{display:none}.main{padding:18px 14px 60px}.stats{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<aside class="sb" id="sb">
+  <a class="sb-back" href="index.html">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Central de Estudos
+  </a>
+  <div class="sb-head">
+    <div class="sb-logo">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+    </div>
+    <div class="sb-titles">
+      <h2>Plano de Estudos</h2>
+      <p>Real Metais · 20 dias</p>
+    </div>
+  </div>
+  <div class="sb-ring-wrap">
+    <div class="sb-ring">
+      <svg viewBox="0 0 88 88">
+        <circle cx="44" cy="44" r="36" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="8"/>
+        <circle id="sbRing" cx="44" cy="44" r="36" fill="none" stroke="#00B74F" stroke-width="8"
+          stroke-dasharray="226.2" stroke-dashoffset="226.2"
+          stroke-linecap="round" transform="rotate(-90 44 44)"/>
+      </svg>
+      <div class="sb-ring-num"><b id="sbPct">0%</b><span id="sbFrac">0/20</span></div>
+    </div>
+    <div class="sb-ring-lbl" id="sbLbl">Pronto para começar</div>
+    <div class="sb-ring-sub" id="sbSub">Complete os dias para ver<br>seu progresso</div>
+  </div>
+  <div class="sb-nav">
+    <div class="sb-nav-title">Navegação por dia</div>
+    <div id="sbDots"></div>
+  </div>
+  <div class="sb-next" id="sbNext">
+    <div class="sb-next-lbl">
+      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Próxima etapa
+    </div>
+    <div class="sb-next-title" id="sbNxtTitle">Dia 1</div>
+    <div class="sb-next-sub" id="sbNxtSub">Variáveis e tipos de dados</div>
+    <button class="sb-next-btn" onclick="goNext()">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      Ir para o dia
+    </button>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="main-hdr">
+    <h1>Trilha de Desenvolvimento Junior</h1>
+    <p>4 semanas · 20 dias · Python, FastAPI, React e Git</p>
+  </div>
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-ic ic-g"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00B74F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+      <div class="stat-n" id="stDone">0</div><div class="stat-l">Dias concluídos</div>
+    </div>
+    <div class="stat">
+      <div class="stat-ic ic-b"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      <div class="stat-n" id="stLeft">20</div><div class="stat-l">Dias restantes</div>
+    </div>
+    <div class="stat">
+      <div class="stat-ic ic-a"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+      <div class="stat-n" id="stNotes">0</div><div class="stat-l">Com anotações</div>
+    </div>
+    <div class="stat">
+      <div class="stat-ic ic-p"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+      <div class="stat-n" id="stPct">0%</div><div class="stat-l">Progresso</div>
+    </div>
+  </div>
+
+  <div class="sec-hdr"><h3>Conquistas</h3><div class="sec-line"></div></div>
+  <div class="conqs">
+    <div class="conq" data-min="1"><div class="conq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>Primeiro dia</div>
+    <div class="conq" data-min="5"><div class="conq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>Semana 1 completa</div>
+    <div class="conq" data-min="10"><div class="conq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>Metade da trilha</div>
+    <div class="conq" data-min="15"><div class="conq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>3 semanas completas</div>
+    <div class="conq" data-min="20"><div class="conq-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div>Trilha concluída</div>
+  </div>
+
+  <div class="sec-hdr"><h3>Anotações gerais</h3><div class="sec-line"></div></div>
+  <div class="glob-wrap">
+    <textarea id="globNotes" placeholder="Anotações gerais da trilha — insights, links, dúvidas que aparecem com frequência..."></textarea>
+    <div class="glob-saved" id="globSaved">Salvo</div>
+  </div>
+
+  <div id="weeks"></div>
+</main>
+
+<script>
+const DAYS=[
+  {id:'d1',wk:1,n:1,title:'Variáveis e tipos de dados',sub:'Python zero',
+   dica:'Em Python não existe declaração de tipo — `x = 10` e Python já sabe que é inteiro. Tipos principais: `int`, `float`, `str`, `bool`, `None`. Para ver o tipo: `type(x)`. Para converter: `int("42")`, `str(10)`. Strings aceitam aspas simples ou duplas. F-strings permitem interpolação: `f"Olá, {nome}"`.',
+   tarefa:'Crie `d01_variaveis.py`. Peça nome, idade e cidade com `input()`. Imprima: `f"Olá, {nome}! Você tem {idade} anos e mora em {cidade}."`. Perceba que `input()` sempre retorna `str` — converta a idade com `int()` para poder fazer contas com ela.',
+   refs:['python/d01_variaveis.py']},
+  {id:'d2',wk:1,n:2,title:'Condicionais',sub:'Python zero',
+   dica:'Python usa indentação (4 espaços) para delimitar blocos — sem chaves `{}`. Comparação usa `==`, atribuição usa `=`. Estrutura: `if condição:` / `elif outra:` / `else:`. Operadores lógicos: `and`, `or`, `not`. Para checar presença: `if item in lista:`.',
+   tarefa:'Crie `d02_condicionais.py` que pede um número inteiro. Imprima se é positivo, negativo ou zero. Se positivo, diga também se é par ou ímpar usando o operador `%` (resto da divisão). Teste com: 0, 7, -3, 100.',
+   refs:['python/d02_condicionais.py']},
+  {id:'d3',wk:1,n:3,title:'Listas e loops',sub:'Python zero',
+   dica:'Listas são mutáveis e aceitam qualquer tipo: `lista = [1, "dois", True]`. Acesso por índice começa em zero: `lista[0]`. Métodos: `.append(item)`, `.remove(item)`, `.pop()`, `len(lista)`. Loop: `for item in lista:`. Com índice: `for i, item in enumerate(lista):`. List comprehension: `[x*2 for x in lista]`.',
+   tarefa:'Crie `d03_listas.py` com 5 nomes. Use `for` com `enumerate` para imprimir numerado. Peça um nome ao usuário e informe se está na lista com `if nome in lista:`. Por fim, ordene com `.sort()` e imprima a lista ordenada.',
+   refs:['python/d03_listas.py']},
+  {id:'d4',wk:1,n:4,title:'Funções',sub:'Python zero',
+   dica:'Funções se definem com `def nome(parametros):`, recuadas 4 espaços. `return` devolve um valor. Parâmetros podem ter padrão: `def saudacao(nome, prefixo="Olá")`. Uma função deve fazer uma coisa só — se o nome não couber numa frase curta, divida. Funções bem nomeadas tornam o código auto-explicável.',
+   tarefa:'Crie `d04_funcoes.py` com 3 funções: `calcular_imc(peso, altura)` retorna o IMC (peso / altura²); `classificar_imc(imc)` retorna "abaixo do peso", "normal", "sobrepeso" ou "obesidade"; `main()` pede peso e altura, chama as duas e imprime o resultado. Chame `main()` no final.',
+   refs:['python/d04_funcoes.py']},
+  {id:'d5',wk:1,n:5,title:'Scripts e módulos',sub:'Python zero',
+   dica:'Um módulo Python é qualquer arquivo `.py`. Importe com `import nome` ou `from nome import funcao`. O bloco `if __name__ == "__main__":` roda só quando o script é chamado diretamente, não quando importado. Use isso para separar lógica reutilizável de código de execução.',
+   tarefa:'Crie `utils.py` com `formatar_cpf(cpf)` que converte `"12345678901"` em `"123.456.789-01"`. Crie `d05_modulos.py` que importa e usa essa função, com `if __name__ == "__main__":`. Teste com `python d05_modulos.py` e depois experimente `import utils` no terminal Python interativo.',
+   refs:['python/utils.py','python/d05_modulos.py']},
+  {id:'d6',wk:2,n:6,title:'HTTP e APIs REST',sub:'Web+Backend',
+   dica:'HTTP é o protocolo da web. Métodos: `GET` (buscar), `POST` (criar), `PUT` (substituir), `PATCH` (atualizar parcialmente), `DELETE` (remover). Status codes: 200 OK, 201 Created, 400 Bad Request, 401 Unauthorized, 404 Not Found, 422 Unprocessable, 500 Server Error. A maioria das respostas é JSON.',
+   tarefa:'Instale `requests` com `pip install requests`. Crie `d06_http.py`: faça GET em `https://jsonplaceholder.typicode.com/users/1` e imprima nome e email. Depois liste todos os posts do usuário 1 via `/posts?userId=1`, imprimindo o título de cada um.',
+   refs:['python/d06_http.py','app/routers/']},
+  {id:'d7',wk:2,n:7,title:'FastAPI básico',sub:'Web+Backend',
+   dica:'FastAPI cria APIs com anotações de tipo Python. Rota básica: `@app.get("/rota")`. Para dados no corpo, defina uma classe `class Item(BaseModel): nome: str`. Parâmetro na URL: `/itens/{id}`. Documentação automática em `/docs`. Execute com: `uvicorn main:app --reload`.',
+   tarefa:'Crie `d07_fastapi.py` com mini-API de tarefas: `GET /tarefas` lista todas, `POST /tarefas` cria nova (recebe `{"titulo": str}`), `GET /tarefas/{id}` retorna uma. Use lista Python como banco temporário. Rode com `uvicorn d07_fastapi:app --reload` e teste pelo `/docs`.',
+   refs:['app/main.py','app/routers/','app/schemas/']},
+  {id:'d8',wk:2,n:8,title:'SQL e banco de dados',sub:'Web+Backend',
+   dica:'SQL tem 4 operações fundamentais: `SELECT` (ler), `INSERT INTO` (criar), `UPDATE...SET` (atualizar), `DELETE FROM` (remover). Filtre com `WHERE`. Junte tabelas com `JOIN`. O projeto usa PostgreSQL. Para praticar localmente, SQLite não precisa instalar nada: `import sqlite3`.',
+   tarefa:'Crie `d08_sql.py` com SQLite: crie tabela `produtos (id INTEGER PRIMARY KEY, nome TEXT, preco REAL)`. Insira 5 produtos. Faça queries: todos os produtos, os com preço acima de 50, o mais caro. Atualize o preço de um produto. Delete um. Imprima os resultados de cada operação.',
+   refs:['python/d08_sql.py','app/models/','alembic/']},
+  {id:'d9',wk:2,n:9,title:'SQLAlchemy e ORM',sub:'Web+Backend',
+   dica:'ORM (Object-Relational Mapper) permite trabalhar com tabelas como classes Python. No SQLAlchemy: defina um Model herdando de `Base`, cada atributo `Column(tipo)` vira uma coluna. Para consultar: `session.query(Model).filter(Model.campo == valor).all()`. Previne SQL injection por padrão.',
+   tarefa:'Reescreva o exercício do Dia 8 usando SQLAlchemy em `d09_orm.py`. Defina um Model `Produto`. Use Session para inserir, consultar, filtrar, atualizar e deletar. Compare os dois arquivos e escreva nas anotações: o que mudou conceitualmente do SQL puro para o ORM?',
+   refs:['python/d09_orm.py','app/models/','app/database.py']},
+  {id:'d10',wk:2,n:10,title:'JWT e autenticação',sub:'Web+Backend',
+   dica:'JWT (JSON Web Token) é um token compacto para autenticação. Estrutura: `header.payload.signature`. O servidor gera o token no login, o cliente envia em toda requisição via `Authorization: Bearer <token>`. O token tem expiração. `python-jose` cria e verifica tokens, `passlib` faz hash de senha.',
+   tarefa:'Abra o arquivo de autenticação do projeto real (`app/auth.py` ou similar). Identifique: onde o token é gerado, onde é verificado, qual algoritmo e qual a expiração. Escreva nas anotações o fluxo completo — do login até uma requisição autenticada bem-sucedida — em suas próprias palavras.',
+   refs:['app/auth.py','app/routers/auth.py','app/dependencies.py']},
+  {id:'d11',wk:3,n:11,title:'HTML e CSS',sub:'Frontend',
+   dica:'HTML define estrutura, CSS define aparência. Tags mais usadas: `div`, `span`, `p`, `h1-h6`, `button`, `input`, `ul/li`. No CSS: `display:flex` para layouts, `gap` para espaçamento entre filhos, `padding` é interno ao elemento, `margin` é externo. Sempre use `box-sizing: border-box`. `border-radius` arredonda cantos.',
+   tarefa:'Crie `d11_pagina.html` com uma página de perfil: header com nome e avatar circular (div com iniciais), seção de informações (cargo, email, data de início), lista de habilidades com badges coloridos. Use apenas CSS em `<style>` — sem frameworks, sem JavaScript. Abra no navegador.',
+   refs:['frontend/src/','d11_pagina.html']},
+  {id:'d12',wk:3,n:12,title:'JavaScript básico',sub:'Frontend',
+   dica:'JavaScript manipula o DOM. `document.getElementById("id")` retorna um elemento. `.textContent` altera texto. `.addEventListener("click", fn)` escuta eventos. Use `const` e `let` (nunca `var`). Arrow functions: `const somar = (a, b) => a + b`. `localStorage.setItem("chave", valor)` persiste dados no navegador.',
+   tarefa:'Adicione JavaScript ao `d11_pagina.html`: (1) botão "Editar nome" que transforma o nome em `<input>` editável; (2) botão "Salvar" que volta a ser texto com o novo valor; (3) salve e carregue o nome via `localStorage`. Perceba o ciclo: evento → DOM → estado → localStorage.',
+   refs:['d12_pagina.html','frontend/src/']},
+  {id:'d13',wk:3,n:13,title:'React — componentes',sub:'Frontend',
+   dica:'React divide a UI em componentes reutilizáveis — funções que retornam JSX. Props são os parâmetros: `function Botao({ texto, onClick }) {...}`. Nomes de componentes sempre com maiúscula. Em JSX use `className` (não `class`), `htmlFor` (não `for`), e feche todas as tags: `<img />`.',
+   tarefa:'No projeto frontend, encontre um componente simples existente (botão, badge ou card). Leia o arquivo completo. Crie uma cópia como `ComponenteEstudo.tsx` e modifique: adicione uma nova prop, altere um estilo, adicione texto condicional com `{condicao && <span>texto</span>}`. Importe e use no App.',
+   refs:['frontend/src/components/','frontend/src/App.tsx']},
+  {id:'d14',wk:3,n:14,title:'useState e hooks',sub:'Frontend',
+   dica:'`useState` é o hook mais básico: `const [valor, setValor] = useState(inicial)`. Chamar `setValor(novo)` re-renderiza o componente. Nunca mute estado diretamente — `estado.push(x)` não funciona; use `setEstado([...estado, x])`. `useEffect` executa ao montar e quando dependências mudam: `useEffect(() => {...}, [dep])`.',
+   tarefa:'Crie `ContadorTarefas.tsx`: lista de tarefas em `useState`, input para adicionar nova, botão para marcar como concluída (texto riscado), botão para remover. Mostre o total e quantas estão concluídas. Objetivo: perceber como o estado controla toda a UI. Importe e teste no App.',
+   refs:['frontend/src/components/','frontend/src/hooks/']},
+  {id:'d15',wk:3,n:15,title:'TypeScript',sub:'Frontend',
+   dica:'TypeScript adiciona tipos ao JavaScript. Tipos básicos: `string`, `number`, `boolean`, `string[]`, `T | null`. Interfaces definem a forma de objetos: `interface User { id: number; nome: string }`. Props de componentes sempre tipadas. Todo JS válido é TS válido — você pode migrar gradualmente.',
+   tarefa:'Abra um arquivo `.tsx` do projeto que você modificou esta semana. Identifique 3 interfaces ou types definidos. Anote o que cada campo representa. Crie `tipos-estudo.ts` onde você reescreve essas interfaces do zero com comentários explicando cada campo. Compare com o original.',
+   refs:['frontend/src/types/','frontend/src/interfaces/','tipos-estudo.ts']},
+  {id:'d16',wk:4,n:16,title:'Git básico',sub:'Sistema+Git',
+   dica:'Git registra snapshots do código. Essenciais: `git status` (ver mudanças), `git diff` (ver o que mudou), `git add arquivo` (preparar), `git commit -m "mensagem"` (salvar), `git log --oneline` (histórico), `git pull` (baixar), `git push` (enviar). Nunca force push em branches compartilhadas.',
+   tarefa:'Pratique: crie `d16_rascunho.txt` com qualquer conteúdo. Rode `git status` → `git add d16_rascunho.txt` → `git status`. Use `git diff --cached` para ver o staged. Faça commit com mensagem descritiva. Rode `git log --oneline -5`. Delete o arquivo e faça um segundo commit.',
+   refs:['d16_rascunho.txt','.git/']},
+  {id:'d17',wk:4,n:17,title:'Estrutura do projeto',sub:'Sistema+Git',
+   dica:'Projetos reais seguem convenções: `app/` para o código, `app/models/` para tabelas, `app/routers/` para rotas HTTP, `app/schemas/` para validação, `tests/` para testes. Ler o README e a estrutura de pastas é sempre o primeiro passo em um projeto novo.',
+   tarefa:'Explore o repositório do projeto real. Mapeie nas anotações: quais pastas existem e o que contêm, qual arquivo define as rotas, qual define os models, onde ficam as variáveis de ambiente. Responda: se precisasse adicionar um novo endpoint, quais arquivos criaria ou modificaria?',
+   refs:['app/','app/models/','app/routers/','app/schemas/','README.md']},
+  {id:'d18',wk:4,n:18,title:'Lendo código existente',sub:'Sistema+Git',
+   dica:'Não tente entender tudo de uma vez. Escolha um fluxo ("como um produto é criado?") e siga do endpoint ao banco: rota → validação → lógica → model/DB. Use `git log --follow -p arquivo` para ver como um arquivo evoluiu. Comentários podem enganar, testes geralmente não.',
+   tarefa:'Escolha um endpoint existente no projeto. Trace o caminho completo: arquivo de rota, função que trata a requisição, schema de validação, model do banco. Registre nas anotações com nomes de arquivo. Responda: quais validações existem? O que acontece se um campo obrigatório vier faltando?',
+   refs:['app/routers/','app/models/','app/schemas/','app/services/']},
+  {id:'d19',wk:4,n:19,title:'Fazendo uma alteração',sub:'Sistema+Git',
+   dica:'Antes de alterar: (1) entenda o que a função faz hoje; (2) leia o teste que cobre esse comportamento; (3) faça a menor mudança possível; (4) teste localmente; (5) revise com `git diff` antes de commitar. Mensagens no imperativo: "adiciona validação de CPF" — não "adicionando" nem "adicionou".',
+   tarefa:'Com supervisão do líder técnico, identifique uma pequena melhoria no projeto real: texto de erro mais claro, validação faltando, ou função que pode ser simplificada. Faça a alteração, teste e abra um Pull Request. Se não houver algo disponível, escreva um teste para uma função existente.',
+   refs:['app/','tests/','CONTRIBUTING.md']},
+  {id:'d20',wk:4,n:20,title:'Revisão e consolidação',sub:'Sistema+Git',
+   dica:'Revisão ativa é mais eficiente que reler. Tente explicar o conceito sem consultar nada (técnica Feynman) — onde travar, releia esse ponto. O objetivo não é memorizar tudo, é saber onde buscar quando precisar. Um dev sênior não sabe tudo de memória — sabe o que procurar e onde.',
+   tarefa:'Sem consultar anotações anteriores, escreva em texto livre: (1) como você explicaria Python para alguém que nunca programou; (2) o que é uma API REST e como o projeto a usa; (3) a diferença entre state local no React e dados no banco; (4) como fazer uma alteração segura no projeto.',
+   refs:['Todas as anotações anteriores','app/','frontend/src/']},
+]
+
+const WEEKS=[
+  {n:1,title:'Python zero',sub:'Variáveis, condicionais, listas, funções e scripts',ico:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>`},
+  {n:2,title:'Web+Backend',sub:'HTTP, FastAPI, SQL, SQLAlchemy e JWT',ico:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="9" height="9" rx="1.5"/><rect x="13" y="2" width="9" height="9" rx="1.5"/><rect x="13" y="13" width="9" height="9" rx="1.5"/><rect x="2" y="13" width="9" height="9" rx="1.5"/></svg>`},
+  {n:3,title:'Frontend',sub:'HTML/CSS, JavaScript, React, useState e TypeScript',ico:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><ellipse cx="12" cy="12" rx="10" ry="4.5"/><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(120 12 12)"/></svg>`},
+  {n:4,title:'Sistema+Git',sub:'Git, estrutura do projeto, lendo e modificando código',ico:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M6 9v6M9 6h3a3 3 0 013 3v3"/></svg>`},
+]
+
+const KD='rm-est3',KN='rm-not3',KG='rm-glob3',KT='rm-tar3'
+let done={},notes={},tasks={},glob=''
+
+function load(){
+  try{done=JSON.parse(localStorage.getItem(KD)||'{}')}catch{done={}}
+  try{notes=JSON.parse(localStorage.getItem(KN)||'{}')}catch{notes={}}
+  try{tasks=JSON.parse(localStorage.getItem(KT)||'{}')}catch{tasks={}}
+  try{glob=localStorage.getItem(KG)||''}catch{glob=''}
+}
+function saveAll(){
+  localStorage.setItem(KD,JSON.stringify(done))
+  localStorage.setItem(KN,JSON.stringify(notes))
+  localStorage.setItem(KT,JSON.stringify(tasks))
+  localStorage.setItem(KG,glob)
+}
+function nDone(){return Object.values(done).filter(Boolean).length}
+function nNotes(){return Object.values(notes).filter(v=>v&&v.trim()).length}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function fmt(s){return esc(s).replace(/`([^`]+)`/g,'<code>$1</code>')}
+
+const CHEV=`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>`
+const CHECK=`<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`
+const FICON=`<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>`
+
+function renderSb(){
+  const n=nDone(),total=DAYS.length,pct=Math.round(n/total*100)
+  const circ=226.2,off=circ-(circ*pct/100)
+  const ring=document.getElementById('sbRing')
+  if(ring)ring.style.strokeDashoffset=off
+  document.getElementById('sbPct').textContent=pct+'%'
+  document.getElementById('sbFrac').textContent=n+'/'+total
+  document.getElementById('sbLbl').textContent=n===0?'Pronto para começar':n<total?'Em andamento':'Trilha concluída!'
+  document.getElementById('sbSub').textContent=n===0?'Complete os dias para ver\nseu progresso':n<total?n+' de '+total+' dias concluídos':'Parabéns por concluir\nos 20 dias'
+  document.getElementById('sbDots').innerHTML=WEEKS.map(w=>{
+    const wd=DAYS.filter(d=>d.wk===w.n)
+    return`<div class="sb-wk"><div class="sb-wk-lbl">Semana ${w.n} — ${w.title}</div><div class="sb-dots">${
+      wd.map(d=>{const isDone=done[d.id],isCur=!isDone&&d.n===n+1;return`<div class="sb-dot ${isDone?'done':isCur?'cur':'pend'}" title="Dia ${d.n}: ${d.title}" onclick="goTo('${d.id}')">${d.n}</div>`}).join('')
+    }</div></div>`
+  }).join('')
+  const nxt=DAYS.find(d=>!done[d.id])
+  const sbN=document.getElementById('sbNext')
+  if(nxt){document.getElementById('sbNxtTitle').textContent='Dia '+nxt.n;document.getElementById('sbNxtSub').textContent=nxt.title;sbN.style.display=''}
+  else sbN.style.display='none'
+}
+
+function renderStats(){
+  const n=nDone(),total=DAYS.length
+  document.getElementById('stDone').textContent=n
+  document.getElementById('stLeft').textContent=total-n
+  document.getElementById('stNotes').textContent=nNotes()
+  document.getElementById('stPct').textContent=Math.round(n/total*100)+'%'
+}
+
+function renderConqs(){
+  const n=nDone()
+  document.querySelectorAll('.conq[data-min]').forEach(el=>el.classList.toggle('on',n>=parseInt(el.dataset.min)))
+}
+
+function renderWeeks(){
+  document.getElementById('weeks').innerHTML=WEEKS.map(w=>{
+    const wd=DAYS.filter(d=>d.wk===w.n)
+    const dn=wd.filter(d=>done[d.id]).length,allDone=dn===wd.length
+    return`<div class="wk-sec" id="wk-${w.n}">
+      <div class="wk-hdr">
+        <div class="wk-ico">${w.ico}</div>
+        <div class="wk-info"><h3>Semana ${w.n} — ${w.title}</h3><p>${w.sub}</p></div>
+        <span class="wk-badge${allDone?' done':''}" id="wkb-${w.n}">${dn}/${wd.length}</span>
+      </div>
+      ${wd.map(d=>{
+        const isDone=!!done[d.id],isTDone=!!tasks[d.id],note=notes[d.id]||''
+        return`<div class="day-card${isDone?' done':''}" id="card-${d.id}">
+          <div class="day-hdr" onclick="toggleCard('${d.id}')">
+            <div class="day-num" id="dnum-${d.id}">${d.n}</div>
+            <div class="day-titles"><h4>Dia ${d.n} — ${d.title}</h4><p>${d.sub}</p></div>
+            <span class="day-badge" id="dbadge-${d.id}">${isDone?'Concluído':'Pendente'}</span>
+            <div class="day-chev">${CHEV}</div>
+          </div>
+          <div class="day-body">
+            <div class="dica">
+              <div class="dica-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></div>
+              <div><div class="dica-lbl">Conceito do dia</div><div class="dica-txt">${fmt(d.dica)}</div></div>
+            </div>
+            <div class="tarefa">
+              <div class="tarefa-lbl">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M9 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2h-3"/><path d="M9 12l2 2 4-4"/></svg>
+                Tarefa prática
+              </div>
+              <div class="tarefa-txt">${fmt(d.tarefa)}</div>
+              <button class="btn-conc${isTDone?' done':''}" id="btask-${d.id}" onclick="toggleTask('${d.id}',event)">${CHECK}${isTDone?'Tarefa concluída':'Concluir tarefa'}</button>
+            </div>
+            <div class="refs">${d.refs.map(r=>`<span class="ref">${FICON}${esc(r)}</span>`).join('')}</div>
+            <div class="notes-wrap">
+              <div class="notes-lbl">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                Anotações
+              </div>
+              <textarea class="notes-ta" placeholder="O que você aprendeu hoje? Dúvidas, insights, links..." oninput="onNote('${d.id}',this)">${esc(note)}</textarea>
+              <div class="notes-saved" id="nsv-${d.id}">Salvo</div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;margin-top:12px">
+              <button class="btn-day-done ${isDone?'done':'pending'}" id="bdone-${d.id}" onclick="markDone('${d.id}',event)">${CHECK}${isDone?'Dia concluído':'Marcar dia como concluído'}</button>
+            </div>
+          </div>
+        </div>`
+      }).join('')}
+    </div>`
+  }).join('')
+}
+
+function toggleCard(id){document.getElementById('card-'+id).classList.toggle('open')}
+
+function toggleTask(id,e){
+  e.stopPropagation()
+  const btn=document.getElementById('btask-'+id)
+  if(btn.classList.contains('done'))return
+  tasks[id]=true;saveAll()
+  btn.className='btn-conc done';btn.innerHTML=CHECK+'Tarefa concluída'
+}
+
+function markDone(id,e){
+  e.stopPropagation()
+  done[id]=!done[id];saveAll()
+  const isDone=done[id]
+  const card=document.getElementById('card-'+id)
+  card.classList.toggle('done',isDone)
+  const numEl=document.getElementById('dnum-'+id)
+  numEl.style.background=isDone?'var(--verde)':'';numEl.style.color=isDone?'#fff':''
+  document.getElementById('dbadge-'+id).textContent=isDone?'Concluído':'Pendente'
+  const btn=document.getElementById('bdone-'+id)
+  btn.className='btn-day-done '+(isDone?'done':'pending')
+  btn.innerHTML=CHECK+(isDone?'Dia concluído':'Marcar dia como concluído')
+  const d=DAYS.find(x=>x.id===id),wd=DAYS.filter(x=>x.wk===d.wk)
+  const dn=wd.filter(x=>done[x.id]).length,allDone=dn===wd.length
+  const badge=document.getElementById('wkb-'+d.wk)
+  if(badge){badge.textContent=dn+'/'+wd.length;badge.className='wk-badge'+(allDone?' done':'')}
+  renderSb();renderStats();renderConqs()
+}
+
+const ntTimers={}
+function onNote(id,ta){
+  notes[id]=ta.value
+  clearTimeout(ntTimers[id])
+  ntTimers[id]=setTimeout(()=>{
+    saveAll();renderStats()
+    const el=document.getElementById('nsv-'+id)
+    if(el){el.classList.add('on');setTimeout(()=>el.classList.remove('on'),1800)}
+  },600)
+}
+
+function goTo(id){
+  const card=document.getElementById('card-'+id);if(!card)return
+  card.scrollIntoView({behavior:'smooth',block:'center'})
+  setTimeout(()=>card.classList.add('open'),200)
+}
+function goNext(){const nxt=DAYS.find(d=>!done[d.id]);if(nxt)goTo(nxt.id)}
+
+let globTimer=null
+document.addEventListener('DOMContentLoaded',()=>{
+  const ta=document.getElementById('globNotes')
+  if(ta){
+    ta.value=glob
+    ta.addEventListener('input',()=>{
+      glob=ta.value;clearTimeout(globTimer)
+      globTimer=setTimeout(()=>{
+        saveAll()
+        const el=document.getElementById('globSaved')
+        if(el){el.classList.add('on');setTimeout(()=>el.classList.remove('on'),1800)}
+      },600)
+    })
+  }
+})
+
+load();renderWeeks();renderSb();renderStats();renderConqs()
+</script>
+</body>
+</html>
